@@ -1,0 +1,23 @@
+{
+  "hosting": {
+    "public": "public",
+    "cleanUrls": true,
+    "headers": [{
+      "source": "**",
+      "headers": [{
+        "key": "Cache-Control",
+        "value": "no-cache, no-store, must-revalidate"
+      }]
+    }, {
+      "source": "**/*.@(js|css|eot|png|svg|ttf|woff|woff2)",
+      "headers": [{
+        "key": "Cache-Control",
+        "value": "public, max-age=604800"
+      }]
+    }],
+    "rewrites": [{
+      "source": "**",
+      "destination": "/index.html"
+    }]
+  }
+}

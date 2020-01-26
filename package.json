@@ -1,0 +1,70 @@
+{
+  "name": "antwerp",
+  "version": "3.0.0",
+  "description": "Application for Nets and Tessellations With Edge-to-edge Regular Polygons",
+  "main": "index.js",
+  "repository": "git@github.com:HHogg/antwerp.git",
+  "author": "Harry Hogg <harry@hogg.io>",
+  "license": "UNLIECENSED",
+  "private": true,
+  "scripts": {
+    "build:site": "rm -rf public && parcel build site/index.html -d public",
+    "lint:css": "stylelint site/**/*.css",
+    "lint:js": "eslint site/**/*.ts site/**/*.tsx",
+    "lint": "yarn lint:js && yarn lint:css",
+    "serve": "superstatic ./public --port 4000 -c superstatic.json",
+    "start": "rm -rf dist && parcel site/index.html --port 4000 -d dist --no-cache --no-autoinstall"
+  },
+  "peerDependencies": {
+    "react": ">=16.6.0",
+    "react-dom": ">=16.6.0"
+  },
+  "dependencies": {
+    "preshape": "^4.1.0",
+    "two.js": "^0.7.0-stable.1"
+  },
+  "devDependencies": {
+    "@hot-loader/react-dom": "^16.11.0",
+    "@types/d3-scale": "*",
+    "@types/file-saver": "^2.0.1",
+    "@types/lodash.groupby": "^4.6.6",
+    "@types/react": "*",
+    "@types/react-dom": "*",
+    "@types/react-router-dom": "*",
+    "@types/two.js": "*",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "autoprefixer": "^9.4.10",
+    "babel-eslint": "^10.0.1",
+    "caniuse-lite": "^1.0.30000697",
+    "d3-scale": "^3.2.1",
+    "eslint": "^5.15.1",
+    "eslint-config-preshape": "^1.1.0",
+    "eslint-plugin-react": "^7.12.4",
+    "file-saver": "^2.0.2",
+    "lodash.groupby": "^4.6.0",
+    "parcel-bundler": "^1.12.3",
+    "postcss-preset-env": "^6.6.0",
+    "react": ">=16.6.0",
+    "react-dom": ">=16.6.0",
+    "react-hot-loader": "^4.12.18",
+    "react-router-dom": "^5.1.2",
+    "react-snap": "^1.23.0",
+    "stylelint": "^9.2.0",
+    "stylelint-config-preshape": "^1.0.0",
+    "stylelint-order": "^0.8.1",
+    "superstatic": "^6.0.4",
+    "typescript": "^3.4.5"
+  },
+  "alias": {
+    "antwerp": "./src",
+    "react-dom": "@hot-loader/react-dom"
+  },
+  "reactSnap": {
+    "source": "public",
+    "minifyHtml": {
+      "collapseWhitespace": false,
+      "removeComments": false
+    }
+  }
+}

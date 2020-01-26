@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>Artboard</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Triangle" fill="#CC5DE8" points="12 2 22 22 12 14.947299"></polygon>
+        <polygon id="Triangle" fill="#BE4BDB" points="12 14.947299 22 22 2 22"></polygon>
+        <polygon id="Triangle" fill="#AE3EC9" points="12 2 12 14.947299 2 22"></polygon>
+    </g>
+</svg>
