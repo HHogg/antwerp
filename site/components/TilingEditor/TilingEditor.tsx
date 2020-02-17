@@ -3,7 +3,6 @@ import { Route, Switch, useLocation } from 'react-router-dom';
 import FileSaver from 'file-saver';
 import { useMatchMedia, useTheme, themes, Flex, Form, Icon, Link, List, ListItem, Text, ThemeSwitcher, colorLightShade1 } from 'preshape';
 import * as d3Scale from 'd3-scale';
-import { version } from '../../../package.json';
 import About from '../About/About';
 import Logo from '../Logo/Logo';
 import TilingLibrary from '../TilingLibrary/TilingLibrary';
@@ -27,7 +26,7 @@ export default () => {
     theme,
   } = React.useContext(URLStateContext);
 
-  const refSVG = React.useRef<SVGSVGElement>();
+  const refSVG = React.useRef<SVGSVGElement>(null);
   const [value, setValue] = React.useState<string>(configuration);
   const location = useLocation();
   const match = useMatchMedia(['600px']);

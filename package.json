@@ -50,9 +50,8 @@
     "react-hot-loader": "^4.12.18",
     "react-router-dom": "^5.1.2",
     "react-snap": "^1.23.0",
-    "stylelint": "^9.2.0",
-    "stylelint-config-preshape": "^1.0.0",
-    "stylelint-order": "^0.8.1",
+    "stylelint": "^13.2.0",
+    "stylelint-config-preshape": "^2.0.0",
     "superstatic": "^6.0.4",
     "typescript": "^3.4.5"
   },
