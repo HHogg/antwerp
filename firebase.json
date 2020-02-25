@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "antwerp",
     "public": "public",
     "cleanUrls": true,
     "headers": [{

@@ -1,5 +1,14 @@
 {
   "projects": {
-    "default": "antwerp-cd14b"
+    "default": "hoggio-2524a"
+  },
+  "targets": {
+    "hoggio-2524a": {
+      "hosting": {
+        "antwerp": [
+          "antwerp"
+        ]
+      }
+    }
   }
 }
