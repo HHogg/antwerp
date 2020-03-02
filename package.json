@@ -20,7 +20,7 @@
     "react-dom": ">=16.6.0"
   },
   "dependencies": {
-    "preshape": "^4.1.0",
+    "preshape": "^4.2.1",
     "two.js": "^0.7.0-stable.1"
   },
   "devDependencies": {

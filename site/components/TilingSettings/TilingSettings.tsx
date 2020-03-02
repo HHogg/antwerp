@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { CheckBox, Flex, Input } from 'preshape';
+import { CheckBox, Flex, Input, Modal, ModalBody, ModalHeader, Text } from 'preshape';
 import { URLState } from '../URLState/URLState';
 import URLStateContext from '../URLState/URLStateContext';
-import Modal from '../Modal/Modal';
 
 export default () => {
   const {
@@ -38,11 +37,16 @@ export default () => {
 
   return (
     <Modal
+        gap="x6"
         maxWidth="24rem"
         onClose={ handleClose }
-        title="Settings"
+        padding="x6"
         visible>
-      <Flex paddingHorizontal="x6" paddingVertical="x6">
+      <ModalHeader>
+        <Text strong>Settings</Text>
+      </ModalHeader>
+
+      <ModalBody>
         <CheckBox
             checked={ animate }
             label="Animate Stages"
@@ -94,7 +98,8 @@ export default () => {
             placeholder="Shape size..."
             type="number"
             value={ shapeSizeState } />
-      </Flex>
+      </ModalBody>
+
     </Modal>
   );
 };

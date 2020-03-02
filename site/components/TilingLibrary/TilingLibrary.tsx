@@ -6,6 +6,9 @@ import {
   Flex,
   Grid,
   Link,
+  Modal,
+  ModalBody,
+  ModalHeader,
   Text,
   Table,
   TableBody,
@@ -16,7 +19,6 @@ import {
 } from 'preshape';
 import configurations from '../../../configurations.json';
 import URLStateContext from '../URLState/URLStateContext';
-import Modal from '../Modal/Modal';
 
 const ShortNamesMap: {
   [key: string]: string;
@@ -49,14 +51,18 @@ export default () => {
 
   return (
     <Modal
-        fullHeight
+        fullscreen
+        margin="x6"
         maxWidth="800px"
         onClose={ handleClose }
-        title="Library"
         visible>
-      <Flex direction="vertical" grow>
+      <ModalHeader padding="x6">
+        <Text strong>Library</Text>
+      </ModalHeader>
+
+      <ModalBody>
         <Flex paddingHorizontal="x6">
-          <Text align="end" paddingVertical="x3">
+          <Text align="end">
             <Link
                 onClick={ () => setGroup(group === 'vertices' ? 'wallpaper' : 'vertices') }
                 size="x1"
@@ -90,9 +96,13 @@ export default () => {
           ) }
         </Flex>
 
-        <Flex basis="none" direction="vertical" grow scrollable>
+        <Flex
+            basis="none"
+            direction="vertical"
+            grow
+            scrollable>
           <Flex basis="none" grow>
-            <Flex paddingHorizontal="x6" paddingVertical="x6">
+            <Flex padding="x6">
               { Object
                   .entries(groupedConfigurations)
                   .map(([groupKey, configurations]) => (
@@ -182,7 +192,7 @@ export default () => {
             </Flex>
           </Flex>
         </Flex>
-      </Flex>
+      </ModalBody>
     </Modal>
   );
 };

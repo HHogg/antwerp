@@ -1,12 +1,13 @@
 import * as React from 'react';
 import {
-  Flex,
+  Modal,
+  ModalHeader,
+  ModalBody,
   Text,
   Separator,
 } from 'preshape';
 import { version } from '../../../package.json';
 import URLStateContext from '../URLState/URLStateContext';
-import Modal from '../Modal/Modal';
 
 export default () => {
   const { pushWithState } = React.useContext(URLStateContext);
@@ -17,11 +18,13 @@ export default () => {
 
   return (
     <Modal
+        margin="x6"
         maxWidth="600px"
         onClose={ handleClose }
-        title="About"
+        padding="x6"
         visible>
-      <Flex padding="x6">
+      <ModalHeader />
+      <ModalBody>
         <Text strong>ANTWERP v{ version }</Text>
         <Text size="x1" strong>
           Application for Nets and Tessellations
@@ -30,17 +33,17 @@ export default () => {
 
         <Separator margin="x6" />
 
-        <Text margin="x2" size="x1">
+        <Text margin="x2" size="x1" tag="div">
           <Text strong>Harrison Hogg</Text>
           <Text>Software Engineer</Text>
         </Text>
 
-        <Text margin="x2" size="x1">
+        <Text margin="x2" size="x1" tag="div">
           <Text strong>Valentin Gomez Jauregui</Text>
           <Text>Professor of Graphic Expression in Engineering</Text>
           <Text>University of Cantabria</Text>
         </Text>
-      </Flex>
+      </ModalBody>
     </Modal>
   );
 };
