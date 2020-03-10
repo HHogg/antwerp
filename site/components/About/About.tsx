@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Link,
   Modal,
   ModalHeader,
   ModalBody,
@@ -36,6 +37,14 @@ export default () => {
         <Text margin="x2" size="x1" tag="div">
           <Text strong>Harrison Hogg</Text>
           <Text>Software Engineer</Text>
+          <Text>
+            <Link
+                href="https://hogg.io"
+                target="HoggIO"
+                underline>
+              https://hogg.io
+            </Link>
+          </Text>
         </Text>
 
         <Text margin="x2" size="x1" tag="div">

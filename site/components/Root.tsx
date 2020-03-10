@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import Site from './Site';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import URLState from './URLState/URLState';
+import TilingEditor from './TilingEditor/TilingEditor';
 
 export default () => {
   return (
     <BrowserRouter>
-      <Site />
+      <URLState>
+        <Switch>
+          <Route component={ TilingEditor } path="/" />
+        </Switch>
+      </URLState>
     </BrowserRouter>
   );
 };
