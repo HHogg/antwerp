@@ -105,6 +105,12 @@ export default () => {
               </Link>
             </ListItem>
 
+            <ListItem separator="|">
+              <Link href="https://github.com/HHogg/antwerp" target="Github" title="Github">
+                <Icon name="Github" size="1.25rem" />
+              </Link>
+            </ListItem>
+
             <ListItem>
               <ThemeSwitcher
                   onChange={ (theme) => onUpdateURLState({ theme }) }
