@@ -18,7 +18,7 @@ import {
   TableRow,
 } from 'preshape';
 import configurations from '../../../configurations.json';
-import URLStateContext from '../URLState/URLStateContext';
+import { URLStateContext } from '../URLState/URLState';
 
 const ShortNamesMap: {
   [key: string]: string;
@@ -29,7 +29,7 @@ const ShortNamesMap: {
 };
 
 export default () => {
-  const { configuration, onUpdateURLState, pushWithState } = React.useContext(URLStateContext);
+  const { configuration, onUpdateUrlState, push } = React.useContext(URLStateContext);
   const match = useMatchMedia(['600px']);
   const [group, setGroup] = React.useState<'vertices' | 'wallpaper'>('vertices');
   const groupedConfigurations = groupBy(configurations, group);
@@ -41,11 +41,11 @@ export default () => {
   }
 
   const handleClose = () => {
-    pushWithState('/');
+    push('/');
   };
 
   const handleSelect = (configuration: string) => {
-    onUpdateURLState({ configuration });
+    onUpdateUrlState({ configuration });
     handleClose();
   };
 

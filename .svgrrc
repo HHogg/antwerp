@@ -1,0 +1,13 @@
+{
+  svgoConfig: {
+    plugins: [{
+      convertStyleToAttrs: false,
+    }, {
+      prefixIds: false,
+    }, {
+      removeDimensions: true,
+    }, {
+      removeViewBox: false,
+    }]
+  }
+}

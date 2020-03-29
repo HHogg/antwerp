@@ -1,22 +1,37 @@
 import * as React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { TypeTheme } from 'preshape';
-import URLStateContext, { URLStateContextProps } from './URLStateContext';
+import {
+  useUrlState,
+  URLStateDecoders,
+  URLStateDefaults,
+  URLStateEncoders,
+  URLStateValidators,
+} from 'preshape';
 
 export interface URLState {
-  animate?: boolean;
-  configuration?: string;
-  disableColoring?: boolean;
-  disableRepeating?: boolean;
-  fadeConnectedShapes?: boolean;
-  maxRepeat?: number;
-  showAxis?: boolean;
-  shapeSize?: number;
-  showTransforms?: boolean;
-  theme?: TypeTheme;
+  animate: boolean;
+  configuration: string;
+  disableColoring: boolean;
+  disableRepeating: boolean;
+  fadeConnectedShapes: boolean;
+  maxRepeat: number;
+  showAxis: boolean;
+  shapeSize: number;
+  showTransforms: boolean;
 }
 
-export const defaultValues: Required<URLState> = {
+const urlStateDecoders: URLStateDecoders<URLState> = {
+  animate: (v) => JSON.parse(v),
+  disableColoring: (v) => JSON.parse(v),
+  disableRepeating: (v) => JSON.parse(v),
+  fadeConnectedShapes : (v) => JSON.parse(v),
+  maxRepeat: (v) => parseInt(v),
+  showAxis: (v) => JSON.parse(v),
+  shapeSize: (v) => parseInt(v),
+  showTransforms: (v) => JSON.parse(v),
+};
+
+const urlStateDefaults: URLStateDefaults<URLState> = {
   animate: false,
   configuration: '6-3-3,3-3/r60/r45(3e)',
   disableColoring: false,
@@ -26,12 +41,12 @@ export const defaultValues: Required<URLState> = {
   showAxis: false,
   shapeSize: 96,
   showTransforms: false,
-  theme: 'night',
 };
 
-const validators: { [K in keyof URLState]: (v: URLState[K]) => boolean } = {
+const urlStateEncoders: URLStateEncoders<URLState> = {};
+
+const urlStateValidators: URLStateValidators<URLState> = {
   animate: (v) => v === true || v === false,
-  configuration: (v) => typeof v === 'string',
   disableColoring: (v) => v === true || v === false,
   disableRepeating: (v) => v === true || v === false,
   fadeConnectedShapes: (v) => v === true || v === false,
@@ -39,86 +54,56 @@ const validators: { [K in keyof URLState]: (v: URLState[K]) => boolean } = {
   showAxis: (v) => v === true || v === false,
   shapeSize: (v) => v !== undefined && Number.isFinite(v) && v >= 60 && v <= 200,
   showTransforms: (v) => v === true || v === false,
-  theme: (v) => v === 'day' || v === 'night',
 };
 
-const getURLSearchParams = (search: string) => {
-  const urlSearchParams = new URLSearchParams(search);
-
-  urlSearchParams.forEach((v, k) => {
-    try {
-      const key = k as keyof URLState;
-      const value = JSON.parse(v);
-      const validator = validators[key];
-
-      if (!validator || !validator(value) || defaultValues[key] === value) {
-        urlSearchParams.delete(k);
-      }
-    } catch (e) {
-      urlSearchParams.delete(k);
-    }
-  });
-
-  return urlSearchParams;
-};
-
-const getURLSearchParamsAsObject = (search: string) => {
-  const object: URLState = {};
-
-  getURLSearchParams(search).forEach((value, key) => {
-    object[key as keyof URLState] = JSON.parse(value);
-  });
-
-  Object.entries(defaultValues).forEach(([k, v]) => {
-    const key = k as keyof URLState;
-
-    if (!object.hasOwnProperty(key)) {
-      object[key] = v;
-    }
-  });
-
-  return object as Required<URLState>;
-};
+export const URLStateContext = React.createContext<URLState & {
+  onUpdateUrlState: (state: Partial<URLState>) => void;
+  push: (pathname: string) => void;
+  search: string;
+}>({
+  animate: false,
+  configuration: '6-3-3,3-3/r60/r45(3e)',
+  disableColoring: false,
+  disableRepeating: false,
+  fadeConnectedShapes: false,
+  maxRepeat: 3,
+  onUpdateUrlState: () => {},
+  push: () => {},
+  search: '',
+  shapeSize: 96,
+  showAxis: false,
+  showTransforms: false,
+});
 
 const URLState: React.FC<{}> = (props) => {
   const history = useHistory();
   const location = useLocation();
-  const refState = React.useRef<string>(location.search);
+  const refSearch = React.useRef(location.search);
+  const state = useUrlState<URLState>({
+    decoders: urlStateDecoders,
+    defaults: urlStateDefaults,
+    encoders: urlStateEncoders,
+    onUpdateSearch: (search) => {
+      refSearch.current = search;
+      history.replace({ search });
+    },
+    search: location.search,
+    validators: urlStateValidators,
+  });
 
-  const handleSetURLState = (search: string) => {
-    refState.current = search;
-    history.replace({ search });
-  };
-
-  const handleUpdateURLState = (state: Partial<URLState>) => {
-    const urlSearchParams = getURLSearchParams(location.search);
-
-    Object.entries(state).forEach(([k, v]) => {
-      const key = k as keyof URLState;
-      const validator = validators[key];
-
-      if (validator && validator(v) && defaultValues[key] !== v) {
-        urlSearchParams.set(key, JSON.stringify(v));
-      } else {
-        urlSearchParams.delete(key);
-      }
+  const push = (pathname: string) => {
+    history.push({
+      pathname: pathname,
+      search: refSearch.current,
     });
-
-    handleSetURLState(urlSearchParams.toString());
   };
 
   React.useEffect(() => {
-    handleSetURLState(getURLSearchParams(location.search).toString());
-  }, []);
-
-  const value: URLStateContextProps = {
-    ...getURLSearchParamsAsObject(location.search),
-    onUpdateURLState: handleUpdateURLState,
-    pushWithState: (path) => history.push(`${path}?${refState.current}`),
-  };
+    refSearch.current = location.search;
+  }, [location.search]);
 
   return (
-    <URLStateContext.Provider { ...props } value={ value } />
+    <URLStateContext.Provider { ...props } value={ { ...state, push } } />
   );
 };
 

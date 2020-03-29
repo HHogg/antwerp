@@ -1,14 +1,28 @@
 import * as React from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import FileSaver from 'file-saver';
-import { useMatchMedia, useTheme, themes, Flex, Form, Icon, Link, List, ListItem, Text, ThemeSwitcher, colorLightShade1 } from 'preshape';
+import {
+  colorLightShade1,
+  useMatchMedia,
+  useTheme,
+  themes,
+  Flex,
+  Form,
+  Icon,
+  Link,
+  List,
+  ListItem,
+  Text,
+  ThemeSwitcher,
+} from 'preshape';
 import * as d3Scale from 'd3-scale';
 import About from '../About/About';
 import Logo from '../Logo/Logo';
 import TilingLibrary from '../TilingLibrary/TilingLibrary';
 import TilingRenderer from '../TilingRenderer/TilingRenderer';
 import TilingSettings from '../TilingSettings/TilingSettings';
-import URLStateContext from '../URLState/URLStateContext';
+import { URLStateContext } from '../URLState/URLState';
+import { RootContext } from '../Root';
 import './TilingEditor.css';
 
 export default () => {
@@ -19,13 +33,13 @@ export default () => {
     disableRepeating,
     fadeConnectedShapes,
     maxRepeat,
-    onUpdateURLState,
+    onUpdateUrlState,
     showAxis,
     shapeSize,
     showTransforms,
-    theme,
   } = React.useContext(URLStateContext);
 
+  const { theme, onChangeTheme } = React.useContext(RootContext);
   const refSVG = React.useRef<SVGSVGElement>(null);
   const [value, setValue] = React.useState<string>(configuration);
   const location = useLocation();
@@ -50,7 +64,7 @@ export default () => {
   };
 
   const handleUpdateConfiguration = () => {
-    onUpdateURLState({ configuration: value });
+    onUpdateUrlState({ configuration: value });
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -73,7 +87,7 @@ export default () => {
             gap="x4"
             grow>
           <Flex>
-            <Logo size="2rem" />
+            <Logo height="32px" width="32px" />
           </Flex>
 
           { match('600px') && (
@@ -113,7 +127,7 @@ export default () => {
 
             <ListItem>
               <ThemeSwitcher
-                  onChange={ (theme) => onUpdateURLState({ theme }) }
+                  onChange={ onChangeTheme }
                   theme={ theme } />
             </ListItem>
           </List>

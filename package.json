@@ -17,6 +17,7 @@
     "start": "rm -rf dist && parcel site/index.html --port 4000 -d dist --no-cache --no-autoinstall"
   },
   "dependencies": {
+    "@svgr/parcel-plugin-svgr": "^5.3.0",
     "autoprefixer": "^9.4.10",
     "caniuse-lite": "^1.0.30000697",
     "d3-scale": "^3.2.1",
@@ -25,7 +26,7 @@
     "lodash.groupby": "^4.6.0",
     "parcel-bundler": "^1.12.3",
     "postcss-preset-env": "^6.6.0",
-    "preshape": "^4.2.2",
+    "preshape": "^4.4.0",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-router-dom": "^5.1.2",

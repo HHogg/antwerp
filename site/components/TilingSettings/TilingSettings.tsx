@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { CheckBox, Flex, Input, Modal, ModalBody, ModalHeader, Text } from 'preshape';
-import { URLState } from '../URLState/URLState';
-import URLStateContext from '../URLState/URLStateContext';
+import { CheckBox, Input, Modal, ModalBody, ModalHeader, Text } from 'preshape';
+import { URLState, URLStateContext } from '../URLState/URLState';
 
 export default () => {
   const {
@@ -10,8 +9,8 @@ export default () => {
     disableRepeating,
     fadeConnectedShapes,
     maxRepeat,
-    onUpdateURLState,
-    pushWithState,
+    onUpdateUrlState,
+    push,
     showAxis,
     shapeSize,
     showTransforms,
@@ -21,7 +20,7 @@ export default () => {
   const [shapeSizeState, setShapeSizeState] = React.useState(shapeSize.toString());
 
   const handleClose = () => {
-    pushWithState('/');
+    push('/');
   };
 
   const handleNumberChange = (event: React.FormEvent<HTMLInputElement>, setState: (value: string) => void, prop: keyof URLState, min: number = -Infinity, max: number = Infinity) => {
@@ -31,7 +30,7 @@ export default () => {
     setState(value);
 
     if (!isNaN(number)) {
-      onUpdateURLState({ [prop]: number });
+      onUpdateUrlState({ [prop]: number });
     }
   };
 
@@ -51,37 +50,37 @@ export default () => {
             checked={ animate }
             label="Animate Stages"
             margin="x2"
-            onChange={ () => onUpdateURLState({ animate: !animate }) } />
+            onChange={ () => onUpdateUrlState({ animate: !animate }) } />
 
         <CheckBox
             checked={ disableColoring }
             label="Disable Colouring"
             margin="x2"
-            onChange={ () => onUpdateURLState({ disableColoring: !disableColoring }) } />
+            onChange={ () => onUpdateUrlState({ disableColoring: !disableColoring }) } />
 
         <CheckBox
             checked={ disableRepeating }
             label="Disable Repeating"
             margin="x2"
-            onChange={ () => onUpdateURLState({ disableRepeating: !disableRepeating }) } />
+            onChange={ () => onUpdateUrlState({ disableRepeating: !disableRepeating }) } />
 
         <CheckBox
             checked={ fadeConnectedShapes }
             label="Fade Connected Shapes"
             margin="x2"
-            onChange={ () => onUpdateURLState({ fadeConnectedShapes: !fadeConnectedShapes })} />
+            onChange={ () => onUpdateUrlState({ fadeConnectedShapes: !fadeConnectedShapes })} />
 
         <CheckBox
             checked={ showAxis }
             label="Show Axis"
             margin="x2"
-            onChange={ () => onUpdateURLState({ showAxis: !showAxis }) } />
+            onChange={ () => onUpdateUrlState({ showAxis: !showAxis }) } />
 
         <CheckBox
             checked={ showTransforms }
             label="Show Transformations"
             margin="x2"
-            onChange={ () => onUpdateURLState({ showTransforms: !showTransforms }) } />
+            onChange={ () => onUpdateUrlState({ showTransforms: !showTransforms }) } />
 
         <Input
             label="Maximum Transform Repeats"
