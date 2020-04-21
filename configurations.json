@@ -1,19 +1,19 @@
 [
   {
     "cundyRollett": "3⁶",
-    "gomJauHogg": "3/m30/r30(1e)",
+    "gomJauHogg": "3/m30/r30(2)",
     "vertices": "Regular",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "6³",
-    "gomJauHogg": "6-6/m30/r30(1c)",
+    "gomJauHogg": "6-6/m30/r30(1)",
     "vertices": "Regular",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "4⁴",
-    "gomJauHogg": "4/m45/r(1e)",
+    "gomJauHogg": "4/m45/r(1)",
     "vertices": "Regular",
     "wallpaper": "p4m (*442)"
   },
@@ -21,49 +21,49 @@
 
   {
     "cundyRollett": "3.12²",
-    "gomJauHogg": "12-3/m30/r30(1e)",
+    "gomJauHogg": "12-3/m30/r30(1)",
     "vertices": "Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "3.4.6.4",
-    "gomJauHogg": "6-4-3/m30/r30(1c)",
+    "gomJauHogg": "6-4-3/m30/r30(2)",
     "vertices": "Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "4.6.12",
-    "gomJauHogg": "12-6,4/m30/r30(1c)",
+    "gomJauHogg": "12-6,4/m30/r30(2)",
     "vertices": "Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "(3.6)²",
-    "gomJauHogg": "6-3-6/m30/r30(2e)",
+    "gomJauHogg": "6-3-6/m30/r30(3)",
     "vertices": "Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "4.8²",
-    "gomJauHogg": "8-4/m90/r45(1e)",
+    "gomJauHogg": "8-4/m90/r45(1)",
     "vertices": "Uniform",
     "wallpaper": "p4m (*442)"
   },
   {
     "cundyRollett": "3².4.3.4",
-    "gomJauHogg": "4-3-3,4/r90/r15(2e)",
+    "gomJauHogg": "4-3-3,4/r90/r15(1)",
     "vertices": "Uniform",
     "wallpaper": "p4g (4*2)"
   },
   {
     "cundyRollett": "3³.4²",
-    "gomJauHogg": "4-3/m90/r25(2e)",
+    "gomJauHogg": "4-3/m90/r15(1)",
     "vertices": "Uniform",
     "wallpaper": "cmm (2*22)"
   },
   {
     "cundyRollett": "3⁴.6",
-    "gomJauHogg": "6-3-3/r60/r45(2e)",
+    "gomJauHogg": "6-3-3/r60/r40(1)",
     "vertices": "Uniform",
     "wallpaper": "p6 (632)"
   },
@@ -71,121 +71,121 @@
 
   {
     "cundyRollett": "3⁶; 3².4.3.4",
-    "gomJauHogg": "3-4-3/m30/r30(1c)",
+    "gomJauHogg": "3-4-3/m30/r30(3)",
     "vertices": "2 Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "3.4.6.4; 3².4.3.4",
-    "gomJauHogg": "6-4-3,3/m30/r60(2e)",
+    "gomJauHogg": "6-4-3,3/m30/r60(3)",
     "vertices": "2 Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "3.4.6.5; 3³.4²",
-    "gomJauHogg": "6-4-3-3/m30/r30(2e)",
+    "gomJauHogg": "6-4-3-3/m30/r30(3)",
     "vertices": "2 Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "3.4.6.4; 3.4².6",
-    "gomJauHogg": "6-4-3,4-6/m30/r30(2c)",
+    "gomJauHogg": "6-4-3,4-6/m30/r30(4)",
     "vertices": "2 Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "4.6.12; 3.4.6.4",
-    "gomJauHogg": "12-4,6-3/m30/r30(1c)",
+    "gomJauHogg": "12-4,6-3/m30/r30(2)",
     "vertices": "2 Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "3⁶; 3².4.12",
-    "gomJauHogg": "12-3,4-3/m30/r30(1c)",
+    "gomJauHogg": "12-3,4-3/m30/r30(2)",
     "vertices": "2 Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "3.12²; 3.4.3.12",
-    "gomJauHogg": "12-0,3,3-0,4/m45/m90(1e)",
+    "gomJauHogg": "12-0,3,3-0,4/m45/m90(1)",
     "vertices": "2 Uniform",
     "wallpaper": "p4m (*442)"
   },
   {
     "cundyRollett": "3⁶; 3².6²",
-    "gomJauHogg": "3-6/m30/r30(1c)",
+    "gomJauHogg": "3-6/m30/r30(3)",
     "vertices": "2 Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "[3⁶; 3⁴.6]¹",
-    "gomJauHogg": "6-3,3-3/m30/m60(1c)",
+    "gomJauHogg": "6-3,3-3/m30/m60(2c)",
     "vertices": "2 Uniform",
     "wallpaper": "p6m (*632)"
   },
   {
     "cundyRollett": "[3⁶; 3⁴.6]²",
-    "gomJauHogg": "6-3-3,3-3/r60/r45(3e)",
+    "gomJauHogg": "6-3-3,3-3/r60/r45(1)",
     "vertices": "2 Uniform",
     "wallpaper": "p6 (632)"
   },
   {
     "cundyRollett": "3².6²; 3⁴.6",
-    "gomJauHogg": "6-3/m90/r15(2e)",
+    "gomJauHogg": "6-3/m90/r15(1)",
     "vertices": "2 Uniform",
     "wallpaper": "cmm (2*22)"
   },
   {
     "cundyRollett": "3.6.3.6; 3².6²",
-    "gomJauHogg": "6-3,6/m90/r45(2e)",
+    "gomJauHogg": "6-3,6/m90/r45(1)",
     "vertices": "2 Uniform",
     "wallpaper": "pmm (*2222)"
   },
   {
     "cundyRollett": "[3.4².6; 3.6.3.6]¹",
-    "gomJauHogg": "6-3,4/m90/r70(2e)",
+    "gomJauHogg": "6-3,4/m90/r70(1)",
     "vertices": "2 Uniform",
     "wallpaper": "cmm (2*22)"
   },
   {
     "cundyRollett": "[3.4².6; 3.6.3.6]²",
-    "gomJauHogg": "6-3,4-6-3,4-6,4/m90/r45(3c)",
+    "gomJauHogg": "6-3,4-6-3,4-6,4/m90/r32.5(4)",
     "vertices": "2 Uniform",
     "wallpaper": "pmm (*2222)"
   },
   {
     "cundyRollett": "[3³.4²; 3².4.3.4]¹",
-    "gomJauHogg": "4-3,3-4,3/r90/m60(2c)",
+    "gomJauHogg": "4-3,3-4,3/r90/m60(1)",
     "vertices": "2 Uniform",
     "wallpaper": "p4g (4*2)"
   },
   {
     "cundyRollett": "[3³.4²; 3².4.3.4]²",
-    "gomJauHogg": "4-3,3,3-4,3/r40(3e)/r270(1e)/r195(2e)",
+    "gomJauHogg": "4-3,3,3-4,3/r35(1)/r270(1)/r195(1)",
     "vertices": "2 Uniform",
     "wallpaper": "pgg (2x)"
   },
   {
     "cundyRollett": "[4⁴; 3³.4²]¹",
-    "gomJauHogg": "4-3/m(1e)/m90(1e)/r15(2e)",
+    "gomJauHogg": "4-3/m(1)/m90(1)/r15(1)",
     "vertices": "2 Uniform",
     "wallpaper": "cmm (2*22)"
   },
   {
     "cundyRollett": "[4⁴; 3³.4²]²",
-    "gomJauHogg": "4-4-3-3/m90/r7(3e)",
+    "gomJauHogg": "4-4-3-3/m90/r7(1)",
     "vertices": "2 Uniform",
     "wallpaper": "cmm (2*22)"
   },
   {
     "cundyRollett": "[3⁶; 3³.4²]¹",
-    "gomJauHogg": "4-3,4-3,3/m90/r15(3e)",
+    "gomJauHogg": "4-3,4-3,3/m90/r15(2)",
     "vertices": "2 Uniform",
     "wallpaper": "pmm (*2222)"
   },
   {
     "cundyRollett": "[3⁶; 3³.4²]²",
-    "gomJauHogg": "4-3-3-3/m90/r90(1e)/r25(4e)",
+    "gomJauHogg": "4-3-3-3/m90/r90(1)/r25(3)",
     "vertices": "2 Uniform",
     "wallpaper": "cmm (2*22)"
   },
@@ -193,109 +193,109 @@
 
   {
     "cundyRollett": "(3.4.6.4)²; 3.4².6",
-    "gomJauHogg": "6-4-3,4-6,3/m30/m(2c)",
+    "gomJauHogg": "6-4-3,4-6,3/m30/m(4)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "(3⁶)²; 3⁴.6",
-    "gomJauHogg": "6-3-3/m30/r30(2e)",
+    "gomJauHogg": "6-3-3/m30/r30(3)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; (3⁴.6)²",
-    "gomJauHogg": "3-3,3-6/m90/r35(2e)",
+    "gomJauHogg": "3-3,3-6/m90/r40(1)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; (3².4.3.4)²",
-    "gomJauHogg": "3-4-3,3/m30/m(3e)",
+    "gomJauHogg": "3-4-3,3/m30/m(4)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "(3.4².6)²; 3.6.3.6",
-    "gomJauHogg": "4-6,4-0,3,3,4/m90/r30(2e)",
+    "gomJauHogg": "4-6,4-0,3,3,4/m90/r35(2)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3.4².6; (3.6.3.6)²",
-    "gomJauHogg": "4-6,4-0,3,3/m90/r15(2e)",
+    "gomJauHogg": "4-6,4-0,3,3/m90/r15(1)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3².6²; (3.6.3.6)²",
-    "gomJauHogg": "6-3,0,3,3,3,3/r90(1e)/r300(1e)/r240(1e)",
+    "gomJauHogg": "6-3,0,3,3,3,3/r90(1)/r240(1)/r300(1)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "(3⁴.6)²; 3.6.3.6",
-    "gomJauHogg": "6-3,3-0,3/r/r(1e)/r45(3e)",
+    "gomJauHogg": "6-3,3-0,3/r/r(1)/r45(3)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3³.4²; (4⁴)²]¹",
-    "gomJauHogg": "4-4-4-3/m90/r5(4e)",
+    "gomJauHogg": "4-4-4-3/m90/r5(7)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3³.4²; (4⁴)²]²",
-    "gomJauHogg": "4-4-3/r(1e)/m90(1e)/r10(3e)",
+    "gomJauHogg": "4-4-3/r(1)/m90(1)/r10(1)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[(3³.4²)²; 4⁴]¹",
-    "gomJauHogg": "4-4-3-3-4/m90/r90(1e)/r10(4c)",
+    "gomJauHogg": "4-4-3-3-4/m90/r90(1)/r10(4)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[(3³.4²)²; 4⁴]²",
-    "gomJauHogg": "4-3,4-3,3-4/m90/r15(4e)",
+    "gomJauHogg": "4-3,4-3,3-4/m90/r15(4)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "(3³.4²)²; 3².4.3.4",
-    "gomJauHogg": "4-4,3,4-3,3,3-3,4-3-4/r/r100(2e)/r15(5e)",
+    "gomJauHogg": "4-4,3,4-3,3,3-3,4-3-4/r/r100(1)/r15(3)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3³.4²; (3².4.3.4)²",
-    "gomJauHogg": "4-3,3-0,4,3/r/r10(2e)/r70(3e)",
+    "gomJauHogg": "4-3,3-0,4,3/r/r10(1)/r75(2)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; (3³.4²)²]¹",
-    "gomJauHogg": "4-3,0,3-3-3/r25(4e)/r165(2e)/m90(1e)",
+    "gomJauHogg": "4-3,0,3-3-3/r25(3)/r165(1)/m90(1)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; (3³.4²)²]²",
-    "gomJauHogg": "4-3,0,3-3/r25(3e)/r165(2e)/m90(1e)",
+    "gomJauHogg": "4-3,0,3-3/r25(2)/r165(1)/m90(1)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[(3⁶)²; 3³.4²]¹",
-    "gomJauHogg": "4-3-3-3-3-3/m90/r5(6e)",
+    "gomJauHogg": "4-3-3-3-3-3/m90/r5(4)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[(3⁶)²; 3³.4²]²",
-    "gomJauHogg": "4-3-3-3-3/m90/r0(3e)/m90(1e)",
+    "gomJauHogg": "4-3-3-3-3/m90/r0(3)/m90(1)",
     "vertices": "3-Uniform (2 Vertex Types)",
     "wallpaper": ""
   },
@@ -303,199 +303,199 @@
 
   {
     "cundyRollett": "3.4².6; 3.6.3.6; 4.6.12",
-    "gomJauHogg": "12-6,4-3,3,4/m30/r30(2c)",
+    "gomJauHogg": "12-6,4-3,3,4/m30/r30(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; 3².4.12; 4.6.12",
-    "gomJauHogg": "12-3,4,6-3/m60/m90(1c)",
+    "gomJauHogg": "12-3,4,6-3/m60/m90(2)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3.4.3.12; 3.4.6.4; 3.12²",
-    "gomJauHogg": "6-4-3,3-12-0,0,0,3/m30/r60(2c)",
+    "gomJauHogg": "6-4-3,3-12-0,0,0,3/m30/r60(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3³.4²; 3².4.12; 3.4.6.4",
-    "gomJauHogg": "12-4,3-6,3-0,0,4/m30/m30(2c)",
+    "gomJauHogg": "12-4,3-6,3-0,0,4/m30/m30(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; 3³.4²; 3².4.12",
-    "gomJauHogg": "12-3,4-3-3-3/m30/m30(2e)",
+    "gomJauHogg": "12-3,4-3-3-3/m30/m30(2)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; 3².4.3.4; 3².4.12",
-    "gomJauHogg": "12-3,4-3,3/m30/r60(2e)",
+    "gomJauHogg": "12-3,4-3,3/m30/r60(3)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁴.6; 3³.4²; 3².4.3.4",
-    "gomJauHogg": "6-3-3-4-3,3/m30/m45(5e)",
+    "gomJauHogg": "6-3-3-4-3,3/m30/m90(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; 3³.4²; 3.4.6.4",
-    "gomJauHogg": "6-4-3,4-3,3/m30/m30(2c)",
+    "gomJauHogg": "6-4-3,4-3,3/m30/m30(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; 3².4.3.4; 3.4.6.4",
-    "gomJauHogg": "3-4-3,6-4/m30/r60(2c)",
+    "gomJauHogg": "3-4-3,6-4/m30/r60(5)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; 3³.4²; 3².4.3.4",
-    "gomJauHogg": "3-4-3-3/m30/r30(2e)",
+    "gomJauHogg": "3-4-3-3/m30/r30(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3².4.12; 3.4.3.12; 3.12²",
-    "gomJauHogg": "12-4-3,3/m90/r20(2e)",
+    "gomJauHogg": "12-4-3,3/m90/r20(2)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3.4.6.4; 3.4².6; 4⁴",
-    "gomJauHogg": "6-4,3-3,0,4-6/m90/r45(2e)",
+    "gomJauHogg": "6-4,3-3,0,4-6/m90/r45(2)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3².4.3.4; 3.4.6.4; 3.4².6",
-    "gomJauHogg": "6-4,3-3,3,4-0,0,6,3/m90/m(2e)/r60(2c)",
+    "gomJauHogg": "6-4,3-3,3,4-0,0,6,3/m90/m(3)/r90(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3³.4²; 3².4.3.4; 4⁴",
-    "gomJauHogg": "4-3-3-0,4/r90/r20(3e)",
+    "gomJauHogg": "4-3-3-0,4/r90/r20(3)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3.4².6; 3.6.3.6; 4⁴]¹",
-    "gomJauHogg": "6-4,3,3-4,4-4/m30(2c)/r/r120(1e)",
+    "gomJauHogg": "6-4,3,3-4,4-4/m30(4)/r/r120(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3.4².6; 3.6.3.6; 4⁴]²",
-    "gomJauHogg": "6-4,3,3-4/m30(2e)/r/r120(1e)",
+    "gomJauHogg": "6-4,3,3-4/m30(2)/r/r120(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3³.4²; 3².6²; 3.4².6",
-    "gomJauHogg": "4-6-3,0,3,3-0,0,4/r20(2e)/m90",
+    "gomJauHogg": "4-6-3,0,3,3-0,0,4/r20(1)/m90",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3².6²; 3.4².6; 3.6.3.6",
-    "gomJauHogg": "4-6,4-0,3,3/r0(2e)/m90/m90(2c)",
+    "gomJauHogg": "4-6,4-0,3,3/r0(2)/m90/m90(2)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁴.6; 3³.4²; 3.4².6",
-    "gomJauHogg": "4-6,4-0,3,3-0,3,3/r/r(1c)/r90(2e)",
+    "gomJauHogg": "4-6,4-0,3,3-0,3,3/r/r(2)/r90(3)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3².6²; 3.6.3.6; 6³]¹",
-    "gomJauHogg": "6-6-3,3,3/r60/m(2c)",
+    "gomJauHogg": "6-6-3,3,3/r60/m(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3².6²; 3.6.3.6; 6³]²",
-    "gomJauHogg": "6-6,6,3-3,3/m/r35(3e)/r145(2e)",
+    "gomJauHogg": "6-6,6,3-3,3/m/r35(5)/r140(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁴.6; 3².6²; 6³",
-    "gomJauHogg": "6-3-3/m/r135(1e)/r20(2e)",
+    "gomJauHogg": "6-3-3/m/r15(1)/r150(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "3⁶; 3².6²; 6³",
-    "gomJauHogg": "3-6/r60/m30(1c)",
+    "gomJauHogg": "3-6/r60/m30(3)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3⁴.6; 3².6²]¹",
-    "gomJauHogg": "6-3-3,3-3,3-0,3/r90(1e)/r225(1e)/r30(3e)",
+    "gomJauHogg": "6-3-3,3-3,3-0,3/r90(1)/r30(5)/r210(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "6; 3⁴.6; 3².6²",
-    "gomJauHogg": "3-3,6-3/m/r35(2e)/r135(1c)",
+    "gomJauHogg": "3-3,6-3/m/r40(1)/r120(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3⁴.6; 3².6²]²",
-    "gomJauHogg": "6-3-3/m90/r15(3e)",
+    "gomJauHogg": "6-3-3/m90/r15(3)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3⁴.6; 3.6.3.6]¹",
-    "gomJauHogg": "3-3,3-3,6,3/m90/r90(2e)/r(2e)",
+    "gomJauHogg": "3-3,3-3,6,3/m90/r(2)/r90(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3⁴.6; 3.6.3.6]²",
-    "gomJauHogg": "3-3-6-0,3/r60/m60(2c)",
+    "gomJauHogg": "3-3-6-0,3/r60/m60(3)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3⁴.6; 3.6.3.6]³",
-    "gomJauHogg": "3-3-6/r60/r30(2e)",
+    "gomJauHogg": "3-3-6/r60/r30(4)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3³.4²; 4⁴]¹",
-    "gomJauHogg": "4-4-3-3/m90/r(3e)/r90(1e)",
+    "gomJauHogg": "4-4-3-3/m90/r(5)/r90(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3³.4²; 4⁴]²",
-    "gomJauHogg": "4-4-3-3-3/m90/r5(5e)/r90(1e)",
+    "gomJauHogg": "4-4-3-3-3/m90/r5(7)/r90(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3³.4²; 4⁴]³",
-    "gomJauHogg": "4-4-3-3-3/r0(1e)/r0(3e)/m90(1e)",
+    "gomJauHogg": "4-4-3-3-3/r0(1)/r0(5)/m90(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
   {
     "cundyRollett": "[3⁶; 3³.4²; 4⁴]⁴",
-    "gomJauHogg": "4-4-3-3-3/r0(1e)/r7(5e)/m90(1e)",
+    "gomJauHogg": "4-4-3-3-3/r0(1e)/r5(7)/m90(1)",
     "vertices": "3-Uniform (3 Vertex Types)",
     "wallpaper": ""
   },
@@ -503,7 +503,7 @@
 
   {
     "cundyRollett": "[(3⁶)²; 3⁴.6; 3².6²]¹",
-    "gomJauHogg": "6-3-3-3/m90/r15(4e)",
+    "gomJauHogg": "6-3-3-3/m90/r10(3)",
     "vertices": "4-Uniform (3 Vertex Types)",
     "wallpaper": ""
   }

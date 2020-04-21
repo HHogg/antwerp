@@ -7,9 +7,9 @@ import {
   Text,
   Separator,
 } from 'preshape';
-import { version } from '../../../package.json';
-import { URLStateContext } from '../URLState/URLState';
-import Logo from '../Logo/Logo';
+import { version } from '../../package.json';
+import { URLStateContext } from './URLState';
+import Logo from './Logo';
 
 export default () => {
   const { push } = React.useContext(URLStateContext);

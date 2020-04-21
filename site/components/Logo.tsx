@@ -1,7 +1,7 @@
 import * as React from 'react';
-import LogoDay from '../../assets/A-day.svg';
-import LogoNight from '../../assets/A-night.svg';
-import { RootContext } from '../Root';
+import LogoDay from '../assets/A-day.svg';
+import LogoNight from '../assets/A-night.svg';
+import { RootContext } from './Root';
 
 interface Props extends React.SVGAttributes<SVGSVGElement> {}
 

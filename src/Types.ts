@@ -1,47 +1,42 @@
-import LineSegment from './LineSegment';
-import { ShapeJS } from './Shape';
-import Vector, { VectorJS } from './Vector';
+import Vector from './Vector';
 
-export type SideN = 3 | 4 | 6 | 8 | 12;
+export type TypeAction = 'm' | 'r';
+export type TypePoint = 'v' | 'l';
+export type TypeShape = 3 | 4 | 6 | 8 | 12;
 
-export type Entities = [
-  SideN,
-  SideN[][],
+export type TypeVectorJS = [number, number, number];
+export type TypeLineSegmentJS = [TypeVectorJS, TypeVectorJS];
+export type TypeShapeJS = [TypeVectorJS[], number, number];
+export type TypeGroupJS = TypeShapeJS[];
+
+export type TypeTransformPoint = [Vector, number, TypePoint];
+
+export type TypeEntities = [
+  TypeShape,
+  TypeShape[][],
   Transform[],
-]
-
-export interface IntersectionPoint {
-  centroid: Vector;
-  edge: Vector;
-  point: Vector;
-  line: LineSegment;
-}
+];
 
 export interface Transform {
-  action: 'm' | 'r';
+  action: TypeAction;
   actionAngle: number;
-  point?: IntersectionPoint;
-  pointNumber?: number;
-  pointType?: 'c' | 'e';
+  point?: TypeTransformPoint;
+  pointIndex: number;
   string: string;
 }
 
 export interface TransformJS extends Omit<Transform, 'point'> {
-  point?: {
-    centroid: VectorJS;
-    edge: VectorJS;
-    line?: {
-      centroid: VectorJS;
-      v1: VectorJS;
-      v2: VectorJS;
-      v1AngleToV2: number;
-    };
-  };
+  point?: [TypeVectorJS, number, TypePoint];
+}
+
+export interface AntwerpError extends Error {
+  type: string;
 }
 
 export interface AntwerpData {
-  error?: Error;
-  shapes: ShapeJS[];
+  error?: AntwerpError;
+  shapes: TypeShapeJS[];
   stages: number;
+  stagesPlacement: number;
   transforms: TransformJS[];
 }

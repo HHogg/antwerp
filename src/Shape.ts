@@ -1,24 +1,8 @@
+import { TypeShapeJS } from './Types';
 import LineSegment from './LineSegment';
-import Vector, { VectorJS } from './Vector';
+import Vector from './Vector';
 
 const mean = (values: number[]) => values.reduce((n, v) => n + v, 0) / values.length;
-
-const callReset = (ls: LineSegment) => ls.reset();
-
-const extractClone = (vector: Vector) => vector.clone();
-const extractDistanceTo = (vector: Vector) => vector.distanceTo();
-const extractJs = (vector: Vector) => vector.toJs();
-
-const sortLineSegments = (ls1: LineSegment, ls2: LineSegment) =>
-  ls1.v1.equalsX(0) && ls1.v2.equalsX(0) && 1 ||
-  ls2.v1.equalsX(0) && ls2.v2.equalsX(0) && -1 ||
-  ls1.centroid.angleDifference(ls2.centroid);
-
-export interface ShapeJS {
-  disconnected: boolean;
-  stage?: number;
-  vectors: VectorJS[];
-}
 
 export default class Shape {
   _centroid?: Vector;
@@ -28,12 +12,15 @@ export default class Shape {
   _minDistance?: number;
   angle: number;
   sides: number;
-  stage?: number;
+  stage: number;
+  stagePlacement: number;
   vectors: Vector[];
 
   constructor(sides: number, vectors: Vector[] = []) {
     this.angle = (Math.PI * 2) / sides;
     this.sides = sides;
+    this.stage = -1;
+    this.stagePlacement = -1;
     this.vectors = vectors;
   }
 
@@ -48,9 +35,13 @@ export default class Shape {
     return this._centroid;
   }
 
+  get disconnected() {
+    return this.lineSegments.some(({ isConnected }) => !isConnected);
+  }
+
   get distances() {
     if (this._distances === undefined) {
-      this._distances = this.vectors.map(extractDistanceTo);
+      this._distances = this.vectors.map((vector: Vector) => vector.distanceTo());
     }
 
     return this._distances;
@@ -66,8 +57,7 @@ export default class Shape {
   }
 
   get lineSegmentsSorted() {
-    return this.lineSegments
-      .sort(sortLineSegments);
+    return this.lineSegments.sort(LineSegment.sort);
   }
 
   get maxDistance() {
@@ -87,7 +77,9 @@ export default class Shape {
   }
 
   clone() {
-    return new Shape(this.sides, this.vectors.map(extractClone));
+    const shape = new Shape(this.sides, this.vectors.map((v) => v.clone()));
+    shape.setStagePlacement(this.stagePlacement);
+    return shape;
   }
 
   equals(s: Shape) {
@@ -134,8 +126,16 @@ export default class Shape {
   }
 
   setStage(stage: number) {
-    if (this.stage === undefined) {
+    if (this.stage === -1) {
       this.stage = stage;
+    }
+
+    return this;
+  }
+
+  setStagePlacement(stage: number) {
+    if (this.stagePlacement === -1) {
+      this.stagePlacement = stage;
     }
 
     return this;
@@ -151,15 +151,11 @@ export default class Shape {
     this._maxDistance = undefined;
     this._minDistance = undefined;
     this.vectors.forEach(fn);
-    this.lineSegments.forEach(callReset);
+    this.lineSegments.forEach((ls) => ls.reset());
     return this;
   }
 
-  toJs(): ShapeJS {
-    return {
-      stage: this.stage,
-      disconnected: this.lineSegments.some(({ isConnected }) => !isConnected),
-      vectors: this.vectors.map(extractJs),
-    };
+  toJS(): TypeShapeJS {
+    return [this.vectors.map((v) => v.toJS()), this.stage, this.stagePlacement];
   }
 }

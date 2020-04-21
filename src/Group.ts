@@ -1,9 +1,16 @@
-import { IntersectionPoint } from './Types';
+import { TypeGroupJS, TypeTransformPoint } from './Types';
 import LineSegment from './LineSegment';
-import Shape, { ShapeJS } from './Shape';
+import Shape from './Shape';
 import Vector from './Vector';
 
 type Item = Group | Shape;
+
+const BUFFER = 0.018 * 5;
+
+const isAngleClose = (a1: number, a2: number) => {
+  const d = a1 - a2;
+  return d > -BUFFER && d < BUFFER;
+};
 
 export default class Group {
   disconnectedVectorDistanceMax?: number;
@@ -18,10 +25,7 @@ export default class Group {
   }
 
   get lineSegmentsSorted() {
-    return this.lineSegments.sort( (ls1: LineSegment, ls2: LineSegment) =>
-      ls1.v1.equalsX(0) && ls1.v2.equalsX(0) && 1 ||
-      ls2.v1.equalsX(0) && ls2.v2.equalsX(0) && -1 ||
-      ls1.centroid.angleDifference(ls2.centroid));
+    return this.lineSegments.sort(LineSegment.sort);
   }
 
   get tail() {
@@ -131,44 +135,34 @@ export default class Group {
     return this;
   }
 
-  getIntersectingPoints(ls1: LineSegment) {
-    const ips: IntersectionPoint[] = [];
+  getIntersectingPoints(ls1: LineSegment): TypeTransformPoint[] {
+    const vectors: TypeTransformPoint[] = [];
 
-    for (let i = 0; i < this.lineSegments.length; i++) {
-      const ls2 = this.lineSegments[i];
-      const ip1 = ls1.intersects(ls2);
-
-      if (ip1 && ls2.shape) {
-        const ip1Snap = ls2.getNearestPoint(ip1);
-        let ip2: undefined | IntersectionPoint = undefined;
-
-        for (let j = 0; j < ips.length && !ip2; j++) {
-          if (ips[j].point.equals(ip1)) {
-            ip2 = ips[j];
-          }
-        }
-
-        if (ip2) {
-          if (ls2.shape.centroid.distanceDifference(ip2.centroid) > 0) {
-            ip2.centroid = ls2.shape.centroid;
-            ip2.edge = ip1Snap;
-            ip2.point = ip1;
-            ip2.line = ls2;
-          }
-        } else {
-          ips.push({
-            centroid: ls2.shape.centroid,
-            edge: ip1Snap,
-            point: ip1,
-            line: ls2,
-          });
+    this.items.forEach((item) => {
+      if (item instanceof Shape) {
+        if (isAngleClose(ls1.angle, item.centroid.angleNorm)) {
+          vectors.push([item.centroid, ls1.angle, 'v']);
         }
       }
-    }
+    });
 
-    return ips
-      .sort(({ point: v1a }: IntersectionPoint, { point: v2a }: IntersectionPoint) => v1a.distanceDifference(v2a))
-      .filter(({ edge }) => !edge.equals(new Vector(0, 0)));
+    this.lineSegments.forEach((ls2) => {
+      if (isAngleClose(ls2.v1.angleNorm, ls1.angle)) {
+        vectors.push([ls2.v1, ls1.angle, 'v']);
+      }
+
+      if (isAngleClose(ls2.centroid.angleNorm, ls1.angle)) {
+        vectors.push([ls2.centroid, ls2.angle, 'l']);
+      }
+
+      if (isAngleClose(ls2.v2.angleNorm, ls1.angle)) {
+        vectors.push([ls2.v2, ls1.angle, 'v']);
+      }
+    });
+
+    return vectors
+      .filter(([a], i) => !a.equals(new Vector(0, 0)) && vectors.slice(i + 1).every(([b]) => !b.equals(a)))
+      .sort(([a], [b]) => a.distanceTo() - b.distanceTo());
   }
 
   setStage(stage: number) {
@@ -201,7 +195,7 @@ export default class Group {
     return this;
   }
 
-  toJs(): ShapeJS[] {
-    return [].concat(...this.items.map((item) => item.toJs()));
+  toJS(): TypeGroupJS {
+    return this.flatten().items.map((item) => (item as Shape).toJS());
   }
 }

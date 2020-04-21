@@ -85,7 +85,7 @@ export const createLine = (props) => {
 export const createPolygon = (props) => {
   return createShape(
     new Two.Path(
-      props.vertices.map(([x, y]) =>
+      props.vertices.map(([ x, y ]) =>
         new Two.Vector(x, y)
       ),
     true, props.curved),

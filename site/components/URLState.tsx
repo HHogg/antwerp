@@ -7,12 +7,15 @@ import {
   URLStateEncoders,
   URLStateValidators,
 } from 'preshape';
+import { TypeColorScale } from '../Types';
+import { colorScales } from '../utils/getColorScale';
 
 export interface URLState {
   animate: boolean;
+  colorMethod: 'placement' | 'transform';
+  colorScale: TypeColorScale;
   configuration: string;
   disableColoring: boolean;
-  disableRepeating: boolean;
   fadeConnectedShapes: boolean;
   maxRepeat: number;
   showAxis: boolean;
@@ -23,7 +26,6 @@ export interface URLState {
 const urlStateDecoders: URLStateDecoders<URLState> = {
   animate: (v) => JSON.parse(v),
   disableColoring: (v) => JSON.parse(v),
-  disableRepeating: (v) => JSON.parse(v),
   fadeConnectedShapes : (v) => JSON.parse(v),
   maxRepeat: (v) => parseInt(v),
   showAxis: (v) => JSON.parse(v),
@@ -33,9 +35,10 @@ const urlStateDecoders: URLStateDecoders<URLState> = {
 
 const urlStateDefaults: URLStateDefaults<URLState> = {
   animate: false,
+  colorMethod: 'placement',
+  colorScale: 'Spectral',
   configuration: '6-3-3,3-3/r60/r45(3e)',
   disableColoring: false,
-  disableRepeating: false,
   fadeConnectedShapes: false,
   maxRepeat: 3,
   showAxis: false,
@@ -47,10 +50,11 @@ const urlStateEncoders: URLStateEncoders<URLState> = {};
 
 const urlStateValidators: URLStateValidators<URLState> = {
   animate: (v) => v === true || v === false,
+  colorMethod: (v) => v === 'placement' || v === 'transform',
+  colorScale: (v) => colorScales.includes(v),
   disableColoring: (v) => v === true || v === false,
-  disableRepeating: (v) => v === true || v === false,
   fadeConnectedShapes: (v) => v === true || v === false,
-  maxRepeat: (v) => v !== undefined && Number.isFinite(v) && v >= 1,
+  maxRepeat: (v) => v !== undefined && Number.isFinite(v) && v >= -1,
   showAxis: (v) => v === true || v === false,
   shapeSize: (v) => v !== undefined && Number.isFinite(v) && v >= 60 && v <= 200,
   showTransforms: (v) => v === true || v === false,
@@ -62,9 +66,10 @@ export const URLStateContext = React.createContext<URLState & {
   search: string;
 }>({
   animate: false,
-  configuration: '6-3-3,3-3/r60/r45(3e)',
+  colorMethod: 'placement',
+  colorScale: 'Preshape Theme',
+  configuration: '6-3-3,3-3/r60/r45(3h)',
   disableColoring: false,
-  disableRepeating: false,
   fadeConnectedShapes: false,
   maxRepeat: 3,
   onUpdateUrlState: () => {},

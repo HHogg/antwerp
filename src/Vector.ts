@@ -1,54 +1,39 @@
+import { TypeVectorJS } from './Types';
 import LineSegment from './LineSegment';
 
 const ANGLE_PRECISION = 0.001;
 const VECTOR_PRECISION = 1;
-const DEG_360 = Math.PI * 2;
 
-export type VectorJS = [number, number, number];
+const getAngle = (x: number, y: number) => {
+  const a1 = Math.atan2(y, x);
+  return a1 > -ANGLE_PRECISION && a1 < ANGLE_PRECISION ? 0 : a1;
+};
 
 export default class Vector {
-  _angle?: number;
+  angle: number;
+  angleNorm: number;
   x: number;
   y: number;
 
   constructor(x: number, y: number) {
+    this.angle = 0;
+    this.angleNorm = 0;
     this.x = x;
     this.y = y;
-  }
 
-  get angle() {
-    if (this._angle === undefined) {
-      const a1 = Math.atan2(this.y, this.x) + (Math.PI / 2);
-      const a2 = (a1 < 0) ? (a1 + Math.PI * 2) : a1;
-      const da = a2 - DEG_360;
-
-      return this._angle = da > -ANGLE_PRECISION &&
-        da < ANGLE_PRECISION ? 0 : a2;
-    }
-
-    return this._angle;
+    this.setXY(x, y);
   }
 
   add(v: Vector) {
     return this.translate(v.x, v.y);
   }
 
-  angleDifference(v: Vector) {
-    const da = this.angle - v.angle;
-    return da > -ANGLE_PRECISION && da < -ANGLE_PRECISION ? 0 : da;
-  }
-
   angleTo(v: Vector) {
-    return Math.atan2(v.y - this.y, v.x - this.x);
+    return getAngle(v.x - this.x, v.y - this.y);
   }
 
   clone() {
     return new Vector(this.x, this.y);
-  }
-
-  distanceDifference(v: Vector) {
-    const d = this.distanceTo() - v.distanceTo();
-    return d > -VECTOR_PRECISION && d < VECTOR_PRECISION ? 0 : d;
   }
 
   distanceTo(v = new Vector(0, 0)) {
@@ -85,10 +70,10 @@ export default class Vector {
     const a = (dx * dx - dy * dy) / (dx * dx + dy * dy);
     const b = 2 * dx * dy / (dx * dx + dy * dy);
 
-    this.x = a * (x - x1) + b * (y - y1) + x1;
-    this.y = b * (x - x1) - a * (y - y1) + y1;
-
-    return this;
+    return this.setXY(
+      a * (x - x1) + b * (y - y1) + x1,
+      b * (x - x1) - a * (y - y1) + y1,
+    );
   }
 
   rotate(a: number, v = new Vector(0, 0)) {
@@ -97,20 +82,32 @@ export default class Vector {
     const cos = Math.cos(a);
     const sin = Math.sin(a);
 
-    this.x = (cos * (x - v.x)) - (sin * (y - v.y)) + v.x;
-    this.y = (cos * (y - v.y)) + (sin * (x - v.x)) + v.y;
+    return this.setXY(
+      (cos * (x - v.x)) - (sin * (y - v.y)) + v.x,
+      (cos * (y - v.y)) + (sin * (x - v.x)) + v.y,
+    );
+  }
+
+  setXY(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+
+    this.angle = getAngle(x, y);
+    this.angleNorm = this.angle < -(Math.PI / 2) - ANGLE_PRECISION
+      ? this.angle + (Math.PI * 2)
+      : this.angle;
 
     return this;
   }
 
   translate(x: number, y: number) {
-    this.x += x;
-    this.y += y;
-
-    return this;
+    return this.setXY(
+      this.x + x,
+      this.y + y,
+    );
   }
 
-  toJs(): VectorJS {
+  toJS(): TypeVectorJS {
     return [
       this.x,
       this.y,

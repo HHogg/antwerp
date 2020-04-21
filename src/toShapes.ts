@@ -1,10 +1,5 @@
-import { AntwerpData, SideN, Transform, TransformJS } from './Types';
-import toEntities, {
-  POINT_CENTROID,
-  POINT_EDGE,
-  TRANSFORM_MIRROR,
-  TRANSFORM_ROTATION,
-} from './toEntities';
+import { AntwerpData, TypeShape, Transform, TransformJS } from './Types';
+import toEntities from './toEntities';
 import Group from './Group';
 import LineSegment from './LineSegment';
 import Shape from './Shape';
@@ -38,8 +33,8 @@ const ErrorTransformNoChange = () => ({
   message: 'The covered area did not increase when the tile was repeated. This is likely caused by one or more incorrect transforms.',
 });
 
-const ErrorTranformNoIntersectionPoint = (transform: string) => ({
-  code: 'ErrorTranformNoIntersectionPoint',
+const ErrorTransformNoIntersectionPoint = (transform: string) => ({
+  code: 'ErrorTransformNoIntersectionPoint',
   type: 'Transform Intersection Point',
   message: `No intersection point found for the "${transform}" transform.`,
 });
@@ -55,7 +50,7 @@ const VA_6 = 1;
 const VA_8 = 1;
 const VA_12 = 1.15;
 
-const validShapes: { [key in SideN]: boolean } = {
+const validShapes: { [key in TypeShape]: boolean } = {
   3: true,
   4: true,
   6: true,
@@ -86,46 +81,39 @@ const getSeedShape = (n: number, r: number) => {
 };
 
 const getIntersectingPoint = (root: Group, transform: Transform) => {
-  const { actionAngle, pointNumber } = transform;
+  const { actionAngle, pointIndex } = transform;
 
-  if (pointNumber !== undefined && root.disconnectedVectorDistanceMax !== undefined) {
+  if (root.disconnectedVectorDistanceMax !== undefined) {
     return root.getIntersectingPoints(new LineSegment(
       new Vector(0, 0),
       new Vector(
-        Math.cos(actionAngle - DEG_90) * root.disconnectedVectorDistanceMax,
-        Math.sin(actionAngle - DEG_90) * root.disconnectedVectorDistanceMax,
+        Math.cos(actionAngle) * root.disconnectedVectorDistanceMax,
+        Math.sin(actionAngle) * root.disconnectedVectorDistanceMax,
       ),
-    ))[pointNumber - 1];
+    ))[pointIndex - 1];
   }
 };
 
 const transformMirrorPoint = (root: Group, stage: Stage, transform: Transform) => {
-  const { actionAngle, point, pointType } = transform;
+  if (!transform.point) return;
 
-  if (pointType === POINT_CENTROID && point) {
-    root.add(root
-      .clone()
-      .setStage(stage.value++)
-      .reflect(new LineSegment(
-        new Vector(
-          Math.cos(actionAngle - DEG_180),
-          Math.sin(actionAngle - DEG_180),
-        ).add(point.centroid),
-        new Vector(
-          Math.cos(actionAngle),
-          Math.sin(actionAngle),
-        ).add(point.centroid),
-      ))
-    );
-  }
+  const { actionAngle, point } = transform;
+  const mirrorAngle = actionAngle + Math.PI / 2;
 
-  if (pointType === POINT_EDGE && point) {
-    root.add(root
-      .clone()
-      .setStage(stage.value++)
-      .reflect(point.line)
-    );
-  }
+  root.add(root
+    .clone()
+    .setStage(stage.value++)
+    .reflect(new LineSegment(
+      new Vector(
+        Math.cos(mirrorAngle - DEG_180),
+        Math.sin(mirrorAngle - DEG_180),
+      ).add(point[0]),
+      new Vector(
+        Math.cos(mirrorAngle),
+        Math.sin(mirrorAngle),
+      ).add(point[0]),
+    ))
+  );
 };
 
 const transformMirrorCenter = (root: Group, stage: Stage, transform: Transform) => {
@@ -154,15 +142,13 @@ const transformMirrorCenter = (root: Group, stage: Stage, transform: Transform) 
 };
 
 const transformRotationPoint = (root: Group, stage: Stage, transform: Transform) => {
-  const { point, pointType } = transform;
+  const { point } = transform;
 
   if (point) {
     root.add(root
       .clone()
       .setStage(stage.value++)
-      .rotate(DEG_180, pointType === POINT_EDGE
-        ? point.edge
-        : point.centroid)
+      .rotate(DEG_180, point[0])
     );
   }
 };
@@ -187,38 +173,31 @@ const transformRotationCenter = (root: Group, stage: Stage, transform: Transform
 };
 
 const transform = (root: Group, stage: Stage, transform: Transform) => {
-  const { action, pointType } = transform;
+  const { action, pointIndex } = transform;
 
   switch (action) {
-    case TRANSFORM_MIRROR:
-      return pointType
+    case 'm':
+      return pointIndex
         ? transformMirrorPoint(root, stage, transform)
         : transformMirrorCenter(root, stage, transform);
-    case TRANSFORM_ROTATION:
-      return transform.pointType
+    case 'r':
+      return pointIndex
         ? transformRotationPoint(root, stage, transform)
         : transformRotationCenter(root, stage, transform);
   }
 };
 
-
-const transformToJs = ({ point, ...rest }: Transform): TransformJS => ({
-  ...rest,
-  point: point && {
-    centroid: point.centroid && point.centroid.toJs(),
-    edge: point.edge && point.edge.toJs(),
-    line: point.line && {
-      centroid: point.line.centroid.toJs(),
-      v1: point.line.v1.toJs(),
-      v2: point.line.v2.toJs(),
-      v1AngleToV2: point.line.v1.angleTo(point.line.v2),
-    },
-  },
+export const transformToJS = (transform: Transform): TransformJS => ({
+  ...transform,
+  point: transform.point && [
+    transform.point[0].toJS(),
+    transform.point[1],
+    transform.point[2],
+  ],
 });
 
 interface Props {
   configuration: string;
-  disableRepeating?: boolean;
   height: number;
   maxRepeat?: number;
   shapeSize: number;
@@ -228,7 +207,6 @@ interface Props {
 export default (props: Props): AntwerpData => {
   const {
     configuration,
-    disableRepeating,
     height,
     maxRepeat,
     shapeSize,
@@ -243,6 +221,7 @@ export default (props: Props): AntwerpData => {
 
   /** Stage 1 */
   const stage: Stage = { value: 0 };
+  const stagePlacement: Stage = { value: 0 };
   const seedShape = getSeedShape(seed, shapeSize / 2);
   const root = new Group();
 
@@ -251,8 +230,9 @@ export default (props: Props): AntwerpData => {
       throw ErrorSeed();
     }
 
-    root.add(seedShape.setStage(stage.value++));
-
+    root.add(seedShape
+      .setStage(stage.value++)
+      .setStagePlacement(stagePlacement.value++));
 
     /** Stage 2 */
     for (let i = 0; i < shapes.length; i++) {
@@ -273,7 +253,9 @@ export default (props: Props): AntwerpData => {
               if (s) {
                 s--;
               } else {
-                const shape = new Shape(shapes[i][j]).fromLineSegment(lss[k]);
+                const shape = new Shape(shapes[i][j])
+                  .fromLineSegment(lss[k])
+                  .setStagePlacement(stagePlacement.value++);
 
                 group.addShape(shape);
                 root.addLineSegments(shape.lineSegments);
@@ -297,11 +279,9 @@ export default (props: Props): AntwerpData => {
 
     /** Stage 3 */
     for (const tn of transforms) {
-      if (tn.pointType) {
-        tn.point = getIntersectingPoint(root, tn);
-
-        if (!tn.point) {
-          throw ErrorTranformNoIntersectionPoint(tn.string);
+      if (tn.pointIndex) {
+        if (!(tn.point = getIntersectingPoint(root, tn))) {
+          throw ErrorTransformNoIntersectionPoint(tn.string);
         }
       }
 
@@ -312,7 +292,7 @@ export default (props: Props): AntwerpData => {
     /** Stage 4 */
     let repeat = maxRepeat;
 
-    if (!disableRepeating && transforms.length > 1) {
+    if ((maxRepeat === undefined || maxRepeat) && transforms.length > 1) {
       const hypot = Math.hypot(height, width) / 2;
       let max = 0;
       let min = 0;
@@ -344,15 +324,17 @@ export default (props: Props): AntwerpData => {
   } catch (e) {
     return {
       error: e,
-      shapes: root.toJs(),
+      shapes: root.toJS(),
       stages: stage.value,
-      transforms: transforms.map(transformToJs),
+      stagesPlacement: stagePlacement.value,
+      transforms: transforms.map(transformToJS),
     };
   }
 
   return {
-    shapes: root.toJs(),
+    shapes: root.toJS(),
     stages: stage.value,
-    transforms: transforms.map(transformToJs),
+    stagesPlacement: stagePlacement.value,
+    transforms: transforms.map(transformToJS),
   };
 };

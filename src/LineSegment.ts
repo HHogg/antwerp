@@ -1,7 +1,6 @@
+import { TypeLineSegmentJS } from './Types';
 import Shape from './Shape';
-import Vector, { VectorJS } from './Vector';
-
-export type LineSegmentJS = [VectorJS, VectorJS];
+import Vector from './Vector';
 
 export default class LineSegment {
   _angle?: number;
@@ -21,6 +20,12 @@ export default class LineSegment {
   yMax: number;
   yMin: number;
 
+  static sort(a: LineSegment, b: LineSegment): number {
+    return (a.v1.equalsX(0) && a.v2.equalsX(0) && 1) ||
+      (b.v1.equalsX(0) && b.v2.equalsX(0) && -1) ||
+      a.centroid.angleNorm - b.centroid.angleNorm;
+  }
+
   constructor(v1: Vector, v2: Vector, shape?: Shape) {
     this.isConnected = false;
     this.shape = shape;
@@ -36,6 +41,9 @@ export default class LineSegment {
   get angle() {
     if (this._angle === undefined) {
       this._angle = this.v1.angleTo(this.v2);
+      this._angle = this._angle < -(Math.PI / 2) - 0.001
+        ? this._angle + (Math.PI * 2)
+        : this._angle;
     }
 
     return this._angle;
@@ -102,59 +110,18 @@ export default class LineSegment {
     return this.centroid.equals(ls.centroid);
   }
 
-  getNearestPoint(v: Vector) {
-    const v1Distance = this.v1.distanceTo(v);
-    const v2Distance = this.v2.distanceTo(v);
-    const centroidDistance = this.centroid.distanceTo(v);
-
-    if (v1Distance < v2Distance) {
-      if (v1Distance < centroidDistance) {
-        return this.v1;
-      }
-    } else {
-      if (v2Distance < centroidDistance) {
-        return this.v2;
-      }
-    }
-
-    return this.centroid;
-  }
-
-  intersects(ls: LineSegment) {
-    const x1 = this.v1.x;
-    const y1 = this.v1.y;
-    const x2 = this.v2.x;
-    const y2 = this.v2.y;
-    const x3 = ls.v1.x;
-    const y3 = ls.v1.y;
-    const x4 = ls.v2.x;
-    const y4 = ls.v2.y;
-
-    const d = ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
-    const ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / d;
-    const ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / d;
-
-    if ((x1 === x2 && y1 === y2) || (x3 === x4 && y3 === y4) || !d || (ua < 0 || ua > 1 || ub < 0 || ub > 1)) {
-      return false;
-    }
-
-    return new Vector(
-      x1 + ua * (x2 - x1),
-      y1 + ua * (y2 - y1),
-    );
-  }
-
   reset() {
+    this._angle = undefined;
     this._centroid = undefined;
     this._length = undefined;
     this._maxDistance = undefined;
     this._minDistance = undefined;
   }
 
-  toJs(): LineSegmentJS {
+  toJS(): TypeLineSegmentJS {
     return [
-      this.v1.toJs(),
-      this.v2.toJs(),
+      this.v1.toJS(),
+      this.v2.toJS(),
     ];
   }
 }

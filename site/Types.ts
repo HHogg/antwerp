@@ -4,3 +4,11 @@ export interface Configuration {
   vertices: string;
   wallpaper?: string;
 }
+
+export type TypeColorScale =
+  'YlGnBu' |
+  'Plasma' |
+  'Preshape Theme' |
+  'RdPu' |
+  'Spectral' |
+  'Viridis';

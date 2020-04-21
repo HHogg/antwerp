@@ -1,16 +1,15 @@
-import { Entities, Transform } from './Types';
+import {
+  TypeAction,
+  TypePoint,
+  TypeEntities,
+  Transform,
+} from './Types';
 
-export const POINT_CENTROID = 'c';
-export const POINT_EDGE = 'e';
+const DELIMITER_STAGE = '/';
+const DELIMITER_PHASE = '-';
+const DELIMITER_SHAPE = ',';
 
-export const TRANSFORM_MIRROR = 'm';
-export const TRANSFORM_ROTATION = 'r';
-
-const DELIMETER_STAGE = '/';
-const DELIMETER_PHASE = '-';
-const DELIMETER_SHAPE = ',';
-
-const REGEX_TRANSFORM = /([mr])(\d*)?\(?(\d+)?([ce])?\)?/i;
+const REGEX_TRANSFORM = /([mr])([\d.]*)?\(?(\d+)?\)?/i;
 
 const toRadians = (n: number) => (n * (Math.PI / 180));
 
@@ -21,45 +20,50 @@ const toTransform = (transform: string): Transform | undefined => {
     const [,
       action,
       actionAngle = '180',
-      pointNumber,
-      pointType,
-    ] = match;
+      pointIndex,
+    ] = match as unknown as [
+      string,
+      TypeAction,
+      string | undefined,
+      string | undefined,
+      TypePoint | undefined,
+    ];
 
-    if ((action === 'm' || action === 'r') && (pointType === 'c' || pointType === 'e' || pointType === '' || pointType === undefined)) {
+    if ((action === 'm' || action === 'r')) {
       return {
         action: action,
-        actionAngle: toRadians(+actionAngle),
-        pointNumber: pointNumber ? +pointNumber : undefined,
-        pointType: pointType || undefined,
+        actionAngle: toRadians(+actionAngle) - (pointIndex ? (Math.PI / 2) : 0),
+        pointIndex: pointIndex ? +pointIndex : 0,
         string: transform,
       };
     }
   }
 };
 
-export default (string: string): Entities => {
+export default (string: string): TypeEntities => {
   const [
     shapes,
     ...transforms
-  ] = string.split(DELIMETER_STAGE);
+  ] = string.split(DELIMITER_STAGE);
 
   const [
     shapeSeed,
     ...shapeGroups
   ] = shapes
-    .split(DELIMETER_PHASE)
+    .split(DELIMITER_PHASE)
     .map((group) =>
       group
-        .split(DELIMETER_SHAPE)
+        .split(DELIMITER_SHAPE)
         .map((shape) => +shape));
 
-  const transformEntites = transforms
+  const transformEntities = transforms
     .map(toTransform)
     .filter(Boolean);
+
 
   return [
     +shapeSeed,
     shapeGroups,
-    transformEntites,
-  ] as Entities;
+    transformEntities,
+  ] as TypeEntities;
 };
