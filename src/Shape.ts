@@ -35,10 +35,6 @@ export default class Shape {
     return this._centroid;
   }
 
-  get disconnected() {
-    return this.lineSegments.some(({ isConnected }) => !isConnected);
-  }
-
   get distances() {
     if (this._distances === undefined) {
       this._distances = this.vectors.map((vector: Vector) => vector.distanceTo());

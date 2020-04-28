@@ -9,10 +9,9 @@ interface ShapeProps {
   radius?: number;
   rotate?: number;
   stroke?: string;
+  strokeDasharray?: [number, number];
   strokeWidth?: number;
   translate?: boolean;
-  x?: number;
-  y?: number;
 }
 
 interface ArcProps extends ShapeProps {
@@ -20,6 +19,7 @@ interface ArcProps extends ShapeProps {
   a2: number;
   cx: number;
   cy: number;
+  radius: number;
 }
 
 const createShape = (shape: Two.Path, props: ShapeProps) => {
@@ -28,6 +28,7 @@ const createShape = (shape: Two.Path, props: ShapeProps) => {
     opacity = 1,
     rotate = 0,
     stroke = 'transparent',
+    strokeDasharray,
     strokeWidth = 0,
     translate,
   } = props;
@@ -53,16 +54,21 @@ const createShape = (shape: Two.Path, props: ShapeProps) => {
   shape.opacity = opacity;
   shape.rotation = rotate;
 
+  if (strokeDasharray) {
+    shape.dashes[0] = strokeDasharray[0];
+    shape.dashes[1] = strokeDasharray[1];
+  }
+
   return shape;
 };
 
-export const createCircle = (props: ShapeProps) => {
+export const createCircle = (props: ShapeProps & { radius: number; x: number; y: number }) => {
   return createShape(
     new Two.Circle(props.x, props.y, props.radius),
   props);
 };
 
-export const createGroup = (props: ShapeProps = {}) => {
+export const createGroup = (props: ShapeProps & { x?: number; y?: number } = {}) => {
   const group = new Two.Group();
 
   if (props.x !== undefined && props.y !== undefined) {
@@ -72,23 +78,23 @@ export const createGroup = (props: ShapeProps = {}) => {
   return group;
 };
 
-export const createLine = (props) => {
+export const createLine = (props: ShapeProps & { curved?: boolean; vertices: [number, number][] }) => {
   return createShape(
     new Two.Path(
       props.vertices.map(([x, y]) =>
         new Two.Vector(x, y)
       ),
-    false, props.curved),
+    false, props.curved || false),
   props);
 };
 
-export const createPolygon = (props) => {
+export const createPolygon = (props: ShapeProps & { curved?: boolean; vertices: [number, number][] }) => {
   return createShape(
     new Two.Path(
       props.vertices.map(([ x, y ]) =>
         new Two.Vector(x, y)
       ),
-    true, props.curved),
+    true, props.curved || false),
   props);
 };
 

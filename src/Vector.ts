@@ -4,24 +4,22 @@ import LineSegment from './LineSegment';
 const ANGLE_PRECISION = 0.001;
 const VECTOR_PRECISION = 1;
 
-const getAngle = (x: number, y: number) => {
-  const a1 = Math.atan2(y, x);
-  return a1 > -ANGLE_PRECISION && a1 < ANGLE_PRECISION ? 0 : a1;
+export const getAngle = (a: number) => {
+  const a1 = a > -ANGLE_PRECISION && a < ANGLE_PRECISION ? 0 : a;
+  return a1 < -(Math.PI / 2) - ANGLE_PRECISION
+    ? a1 + (Math.PI * 2)
+    : a1;
 };
 
 export default class Vector {
   angle: number;
-  angleNorm: number;
   x: number;
   y: number;
 
   constructor(x: number, y: number) {
-    this.angle = 0;
-    this.angleNorm = 0;
+    this.angle = this.angle = getAngle(Math.atan2(y, x));
     this.x = x;
     this.y = y;
-
-    this.setXY(x, y);
   }
 
   add(v: Vector) {
@@ -29,7 +27,7 @@ export default class Vector {
   }
 
   angleTo(v: Vector) {
-    return getAngle(v.x - this.x, v.y - this.y);
+    return getAngle(Math.atan2(v.y - this.y, v.x - this.x));
   }
 
   clone() {
@@ -92,10 +90,7 @@ export default class Vector {
     this.x = x;
     this.y = y;
 
-    this.angle = getAngle(x, y);
-    this.angleNorm = this.angle < -(Math.PI / 2) - ANGLE_PRECISION
-      ? this.angle + (Math.PI * 2)
-      : this.angle;
+    this.angle = getAngle(Math.atan2(y, x));
 
     return this;
   }
@@ -111,7 +106,6 @@ export default class Vector {
     return [
       this.x,
       this.y,
-      this.angle,
     ];
   }
 }

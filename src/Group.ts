@@ -5,7 +5,7 @@ import Vector from './Vector';
 
 type Item = Group | Shape;
 
-const BUFFER = 0.018 * 5;
+const BUFFER = 0.018 * 2.5;
 
 const isAngleClose = (a1: number, a2: number) => {
   const d = a1 - a2;
@@ -140,22 +140,22 @@ export default class Group {
 
     this.items.forEach((item) => {
       if (item instanceof Shape) {
-        if (isAngleClose(ls1.angle, item.centroid.angleNorm)) {
+        if (isAngleClose(ls1.angle, item.centroid.angle)) {
           vectors.push([item.centroid, ls1.angle, 'v']);
         }
       }
     });
 
     this.lineSegments.forEach((ls2) => {
-      if (isAngleClose(ls2.v1.angleNorm, ls1.angle)) {
+      if (isAngleClose(ls2.v1.angle, ls1.angle)) {
         vectors.push([ls2.v1, ls1.angle, 'v']);
       }
 
-      if (isAngleClose(ls2.centroid.angleNorm, ls1.angle)) {
+      if (isAngleClose(ls2.centroid.angle, ls1.angle)) {
         vectors.push([ls2.centroid, ls2.angle, 'l']);
       }
 
-      if (isAngleClose(ls2.v2.angleNorm, ls1.angle)) {
+      if (isAngleClose(ls2.v2.angle, ls1.angle)) {
         vectors.push([ls2.v2, ls1.angle, 'v']);
       }
     });

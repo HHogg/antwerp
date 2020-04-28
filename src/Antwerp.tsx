@@ -19,7 +19,7 @@ export interface AntwerpProps extends FlexProps {
   worker?: Worker;
 }
 
-const Antwerp: React.RefForwardingComponent<HTMLDivElement, AntwerpProps> = (props, ref) => {
+const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
   const {
     animate,
     colorMethod,
@@ -56,6 +56,13 @@ const Antwerp: React.RefForwardingComponent<HTMLDivElement, AntwerpProps> = (pro
         refSvg.current = sizeNode.firstChild as SVGSVGElement;
       }
     }
+
+    return () => {
+      if (refDrawer.current) {
+        refDrawer.current.destroy();
+        refDrawer.current = undefined;
+      }
+    };
   }, [sizeNode]);
 
   React.useEffect(() => {
@@ -65,12 +72,6 @@ const Antwerp: React.RefForwardingComponent<HTMLDivElement, AntwerpProps> = (pro
     } else if ((!worker || pushToQueue) && refWorker.current) {
       refWorker.current.terminate();
     }
-
-    return () => {
-      if (refWorker.current) {
-        refWorker.current.terminate();
-      }
-    };
   }, [pushToQueue, worker]);
 
   React.useEffect(() => {
@@ -104,32 +105,7 @@ const Antwerp: React.RefForwardingComponent<HTMLDivElement, AntwerpProps> = (pro
         showTransforms,
       });
     }
-  }, [animate, colorMethod, colorScale, data]);
-
-  React.useEffect(() => {
-    if (refDrawer.current) {
-      refDrawer.current.opts.showAxis15 = showAxis15;
-      refDrawer.current.opts.showAxis90 = showAxis90;
-
-      if (showAxis15 || showAxis90) {
-        refDrawer.current.drawAxis();
-      } else {
-        refDrawer.current.removeAxis();
-      }
-    }
-  }, [showAxis15, showAxis90]);
-
-  React.useEffect(() => {
-    if (refDrawer.current) {
-      refDrawer.current.opts.showTransforms = showTransforms;
-
-      if (showTransforms) {
-        refDrawer.current.drawTransforms();
-      } else {
-        refDrawer.current.removeTransforms();
-      }
-    }
-  }, [showTransforms]);
+  }, [animate, colorMethod, colorScale, data, showAxis15, showAxis90, showTransforms]);
 
   React.useEffect(() => {
     return () => {
@@ -167,6 +143,6 @@ const Antwerp: React.RefForwardingComponent<HTMLDivElement, AntwerpProps> = (pro
       </Flex>
     </Flex>
   );
-};
+});
 
-export default React.forwardRef(Antwerp);
+export default Antwerp;

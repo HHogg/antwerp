@@ -22,26 +22,29 @@ const DEG_90 = Math.PI * 0.5;
 const DEG_180 = Math.PI;
 const DEG_360 = Math.PI * 2;
 
-const AXIS_COLOR = openColor.red[6];
-const TRANSFORM_MIRROR_CENTER_COLOR = openColor.cyan[6];
-const TRANSFORM_MIRROR_POINT_COLOR = openColor.cyan[6];
-const TRANSFORM_ROTATION_POINT_COLOR = openColor.lime[6];
-const TRANSFORM_ROTATION_CENTER_COLOR = openColor.lime[6];
+const AXIS_COLOR_PRI = openColor.red[6];
+const AXIS_COLOR_SEC = openColor.red[2];
+const TRANSFORM_MIRROR_CENTER_COLOR = openColor.blue[6];
+const TRANSFORM_MIRROR_POINT_COLOR = openColor.blue[6];
+const TRANSFORM_ROTATION_POINT_COLOR = openColor.green[6];
+const TRANSFORM_ROTATION_CENTER_COLOR = openColor.green[6];
 
 interface DrawOptions {
   animate?: boolean;
   colorMethod?: 'placement' | 'transform';
   colorScale?: (t: number) => string;
   fadeConnectedShapes?: boolean;
-  showAxis?: boolean;
+  showAxis15?: boolean;
+  showAxis90?: boolean;
   showTransforms?: boolean;
 }
 
 export default class TilingDrawer {
   container: HTMLDivElement;
-  groupAxis?: Two.Group;
-  groupShapes?: Two.Group;
-  groupTransforms?: Two.Group;
+  groupAxis: Two.Group;
+  groupRoot: Two.Group;
+  groupShapes: Two.Group;
+  groupTransforms: Two.Group;
   interval?: number;
   data: AntwerpData;
   opts: DrawOptions;
@@ -50,18 +53,34 @@ export default class TilingDrawer {
 
   constructor(container: HTMLDivElement) {
     this.container = container;
-    this.data = { shapes: [], stages: 0, transforms: [] };
+    this.data = { shapes: [], stages: 0, stagesPlacement: 0, transforms: [] };
     this.opts = {};
     this.two = new Two({
       autostart: true,
       type: Two.Types.svg,
     }).appendTo(this.container);
 
+    this.groupAxis = new Two.Group();
+    this.groupRoot = new Two.Group();
+    this.groupShapes = new Two.Group();
+    this.groupTransforms = new Two.Group();
+  }
+
+  init() {
+    this.two.clear();
+    this.two.remove(this.groupRoot);
+    this.two.add(this.groupRoot = createGroup());
+    this.groupRoot.add(this.groupShapes = createGroup({ x: this.two.width / 2, y: this.two.height / 2 }));
+    this.groupRoot.add(this.groupAxis = createGroup());
+    this.groupRoot.add(this.groupTransforms = createGroup({ x: this.two.width / 2, y: this.two.height / 2 }));
   }
 
   destroy() {
+    this.two.clear();
     this.two.remove();
     window.clearInterval(this.interval);
+    delete this.interval;
+    delete this.two;
   }
 
   draw(height: number, width: number, data: AntwerpData, opts: DrawOptions) {
@@ -70,6 +89,8 @@ export default class TilingDrawer {
     this.two.renderer.setSize(width, height);
     this.two.width = this.two.renderer.width;
     this.two.height = this.two.renderer.height;
+
+    this.init();
 
     if (this.interval) {
       window.clearInterval(this.interval);
@@ -80,38 +101,37 @@ export default class TilingDrawer {
       this.interval = window.setInterval(() => {
         this.drawShapes((++(this.toStage as number) % (data.stages + 2)) - 1);
 
-        if (opts.showAxis) this.drawAxis();
+        if (opts.showAxis15 || opts.showAxis90) this.drawAxis();
         if (opts.showTransforms) this.drawTransforms();
       }, ANIMATE_INTERVAL);
     } else {
       this.drawShapes();
 
-      if (opts.showAxis) this.drawAxis();
+      if (opts.showAxis15 || opts.showAxis90) this.drawAxis();
       if (opts.showTransforms) this.drawTransforms();
     }
   }
 
   drawAxis() {
-    this.removeAxis();
-    this.two.add(this.groupAxis = createGroup());
+    const cx = this.two.width / 2;
+    const cy = this.two.height / 2;
+    const hypot = Math.hypot(this.two.height, this.two.width);
 
-    this.groupAxis.add(createLine({
-      stroke: AXIS_COLOR,
-      strokeWidth: borderSizeX1Px,
-      vertices: [
-        [(this.two.width / 2) + (borderSizeX1Px / 2), 0],
-        [(this.two.width / 2) + (borderSizeX1Px / 2), this.two.height],
-      ],
-    }));
-
-    this.groupAxis.add(createLine({
-      stroke: AXIS_COLOR,
-      strokeWidth: borderSizeX1Px,
-      vertices: [
-        [0, (this.two.height / 2) + (borderSizeX1Px / 2)],
-        [this.two.width, (this.two.height / 2) + (borderSizeX1Px / 2)],
-      ],
-    }));
+    for (let i = 0; i < 24; i++) {
+      if (this.opts.showAxis15 || i % 6 === 0) {
+        this.groupAxis.add(createLine({
+          stroke: this.opts.showAxis90 && i % 6 === 0
+            ? AXIS_COLOR_PRI
+            : AXIS_COLOR_SEC,
+          strokeDasharray: [4, 4],
+          strokeWidth: borderSizeX1Px,
+          vertices: [[cx, cy], [
+            cx + Math.cos(i * (Math.PI / 12)) * hypot,
+            cy + Math.sin(i * (Math.PI / 12)) * hypot,
+          ]],
+        }));
+      }
+    }
   }
 
   drawShapes(toStage?: number) {
@@ -121,25 +141,17 @@ export default class TilingDrawer {
       }
 
       if (this.opts.colorMethod === 'transform') {
-        return this.opts.colorScale(1 - (shape[1] / this.data.stages));
+        return this.opts.colorScale((1 - (shape[1] / this.data.stages)) || 0);
       }
 
-      return this.opts.colorScale(1 - (shape[2] / this.data.stagesPlacement));
+      return this.opts.colorScale((1 - (shape[2] / this.data.stagesPlacement)) || 0);
     };
-
-    if (this.groupShapes) {
-      this.groupShapes.remove();
-    }
-
-    this.two.add(this.groupShapes = createGroup({
-      x: this.two.width / 2,
-      y: this.two.height / 2,
-    }));
 
     this.data.shapes.forEach((shape) => {
       if (toStage === undefined || shape[1] <= toStage) {
         this.groupShapes?.add(createPolygon({
           fill: getShapeFill(shape),
+          opacity: this.opts.showTransforms ? 0.5 : 1,
           stroke: colorDarkShade1,
           strokeWidth: borderSizeX1Px,
           vertices: shape[0],
@@ -149,12 +161,7 @@ export default class TilingDrawer {
   }
 
   drawTransforms() {
-    this.removeTransforms();
-    this.two.add(this.groupTransforms = createGroup({
-      x: this.two.width / 2,
-      y: this.two.height / 2,
-    }));
-
+    this.groupShapes.opacity = 0.5;
     this.data.transforms.forEach((transform) => {
       switch (transform.action) {
         case 'm':
@@ -169,33 +176,6 @@ export default class TilingDrawer {
     });
   }
 
-  drawTransformMirrorPoint({ actionAngle, point }: TransformJS) {
-    const hypot = Math.hypot(this.two.height, this.two.width);
-    const mirrorAngle = actionAngle + Math.PI / 2;
-
-    const px = point ? point[0][0] : 0;
-    const py = point ? point[0][1] : 0;
-    const lx1 = (Math.cos(mirrorAngle - DEG_180) * hypot) + px;
-    const ly1 = (Math.sin(mirrorAngle - DEG_180) * hypot) + py;
-    const lx2 = (Math.cos(mirrorAngle) * hypot) + px;
-    const ly2 = (Math.sin(mirrorAngle) * hypot) + py;
-
-    this.groupTransforms?.add(createLine({
-      stroke: TRANSFORM_MIRROR_POINT_COLOR,
-      strokeWidth: borderSizeX1Px,
-      vertices: [[lx1, ly1], [lx2, ly2]],
-    }));
-
-    if (px && py) {
-      this.groupTransforms?.add(createCircle({
-        fill: TRANSFORM_MIRROR_POINT_COLOR,
-        radius: sizeX1Px,
-        x: px,
-        y: py,
-      }));
-    }
-  }
-
   drawTransformMirrorCenter({ actionAngle }: TransformJS) {
     const hypot = Math.hypot(this.two.height, this.two.width);
 
@@ -204,8 +184,9 @@ export default class TilingDrawer {
     }
 
     while (actionAngle <= DEG_360) {
-      this.groupTransforms?.add(createLine({
+      this.groupTransforms.add(createLine({
         stroke: TRANSFORM_MIRROR_CENTER_COLOR,
+        strokeDasharray: [12, 4],
         strokeWidth: borderSizeX1Px,
         vertices: [[0, 0], [
           Math.cos(actionAngle - DEG_90) * hypot,
@@ -214,6 +195,35 @@ export default class TilingDrawer {
       }));
 
       actionAngle *= 2;
+    }
+  }
+
+  drawTransformMirrorPoint({ actionAngle, point }: TransformJS) {
+    const px = point ? point[0][0] : 0;
+    const py = point ? point[0][1] : 0;
+    const a = point && point[2] === 'l' ? point[1] : actionAngle + Math.PI / 2;
+
+    const length = Math.hypot(py, px) * 2;
+
+    const lx1 = (Math.cos(a - DEG_180) * length) + px;
+    const ly1 = (Math.sin(a - DEG_180) * length) + py;
+    const lx2 = (Math.cos(a) * length) + px;
+    const ly2 = (Math.sin(a) * length) + py;
+
+    this.groupTransforms.add(createLine({
+      stroke: TRANSFORM_MIRROR_POINT_COLOR,
+      strokeDasharray: [12, 4],
+      strokeWidth: borderSizeX1Px,
+      vertices: [[lx1, ly1], [lx2, ly2]],
+    }));
+
+    if (px && py) {
+      this.groupTransforms.add(createCircle({
+        fill: TRANSFORM_MIRROR_POINT_COLOR,
+        radius: sizeX1Px,
+        x: px,
+        y: py,
+      }));
     }
   }
 
@@ -227,8 +237,9 @@ export default class TilingDrawer {
     }
 
     while (angle <= DEG_360) {
-      this.groupTransforms?.add(createLine({
+      this.groupTransforms.add(createLine({
         stroke: TRANSFORM_ROTATION_CENTER_COLOR,
+        strokeDasharray: [12, 4],
         strokeWidth: borderSizeX1Px,
         vertices: [[0, 0], [
           Math.cos(angle - DEG_90) * hypot,
@@ -248,7 +259,7 @@ export default class TilingDrawer {
     const hypot = Math.hypot(this.two.height, this.two.width);
 
     if (point) {
-      this.groupTransforms?.add(createCircle({
+      this.groupTransforms.add(createCircle({
         fill: TRANSFORM_ROTATION_POINT_COLOR,
         radius: sizeX1Px,
         x: point[0][0],
@@ -260,13 +271,14 @@ export default class TilingDrawer {
         point[0][0], point[0][1], Math.hypot(point[0][0], point[0][1]));
     }
 
-    this.groupTransforms?.add(createLine({
+    this.groupTransforms.add(createLine({
       stroke: TRANSFORM_ROTATION_POINT_COLOR,
+      strokeDasharray: [12, 4],
       strokeWidth: borderSizeX1Px,
-      vertices: [
-        [0, 0],
-        [point ? point[0][0] * 2 : hypot, point ? point[0][1] * 2 : hypot],
-      ],
+      vertices: [[0, 0], [
+        point ? point[0][0] * 2 : hypot,
+        point ? point[0][1] * 2 : hypot,
+      ]],
     }));
   }
 
@@ -277,8 +289,9 @@ export default class TilingDrawer {
     const arrowSize = sizeX2Px;
     const arcRadius = radius - (arrowSize * 2);
 
-    this.groupTransforms?.add(createArc({
+    this.groupTransforms.add(createArc({
       stroke: stroke,
+      strokeDasharray: [12, 4],
       strokeWidth: borderSizeX1Px,
       a1: angleStart,
       a2: angleEnd,
@@ -287,7 +300,7 @@ export default class TilingDrawer {
       radius: arcRadius,
     }));
 
-    this.groupTransforms?.add(createLine({
+    this.groupTransforms.add(createLine({
       stroke: stroke,
       strokeWidth: borderSizeX1Px,
       vertices: [[
@@ -301,17 +314,5 @@ export default class TilingDrawer {
         cy + Math.sin(angleEnd - (anglePadding / 2)) * (arcRadius + arrowSize),
       ]],
     }));
-  }
-
-  removeAxis() {
-    if (this.groupAxis) {
-      this.groupAxis.remove();
-    }
-  }
-
-  removeTransforms() {
-    if (this.groupTransforms) {
-      this.groupTransforms.remove();
-    }
   }
 }

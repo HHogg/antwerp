@@ -1,4 +1,4 @@
-import { AntwerpData, TypeShape, Transform, TransformJS } from './Types';
+import { AntwerpData, AntwerpOptions, TypeShape, Transform, TransformJS } from './Types';
 import toEntities from './toEntities';
 import Group from './Group';
 import LineSegment from './LineSegment';
@@ -98,7 +98,7 @@ const transformMirrorPoint = (root: Group, stage: Stage, transform: Transform) =
   if (!transform.point) return;
 
   const { actionAngle, point } = transform;
-  const mirrorAngle = actionAngle + Math.PI / 2;
+  const mirrorAngle = point[2] === 'l' ? point[1] : actionAngle + Math.PI / 2;
 
   root.add(root
     .clone()
@@ -196,15 +196,7 @@ export const transformToJS = (transform: Transform): TransformJS => ({
   ],
 });
 
-interface Props {
-  configuration: string;
-  height: number;
-  maxRepeat?: number;
-  shapeSize: number;
-  width: number;
-}
-
-export default (props: Props): AntwerpData => {
+export default (props: AntwerpOptions): AntwerpData => {
   const {
     configuration,
     height,
@@ -226,17 +218,26 @@ export default (props: Props): AntwerpData => {
   const root = new Group();
 
   try {
+    if (!seed) {
+      return {
+        shapes: [],
+        stages: 0,
+        stagesPlacement: 0,
+        transforms: [],
+      };
+    }
+
     if (!seedShape) {
       throw ErrorSeed();
     }
 
     root.add(seedShape
-      .setStage(stage.value++)
+      .setStage(stage.value)
       .setStagePlacement(stagePlacement.value++));
 
     /** Stage 2 */
     for (let i = 0; i < shapes.length; i++) {
-      const group = new Group().setStage(stage.value++);
+      const group = new Group().setStage(stage.value);
       const tail = root.tail;
       const lss = tail.lineSegmentsSorted;
 
@@ -325,16 +326,16 @@ export default (props: Props): AntwerpData => {
     return {
       error: e,
       shapes: root.toJS(),
-      stages: stage.value,
-      stagesPlacement: stagePlacement.value,
+      stages: stage.value - 1,
+      stagesPlacement: stagePlacement.value - 1,
       transforms: transforms.map(transformToJS),
     };
   }
 
   return {
     shapes: root.toJS(),
-    stages: stage.value,
-    stagesPlacement: stagePlacement.value,
+    stages: stage.value - 1,
+    stagesPlacement: stagePlacement.value - 1,
     transforms: transforms.map(transformToJS),
   };
 };

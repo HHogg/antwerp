@@ -23,7 +23,7 @@ export default class LineSegment {
   static sort(a: LineSegment, b: LineSegment): number {
     return (a.v1.equalsX(0) && a.v2.equalsX(0) && 1) ||
       (b.v1.equalsX(0) && b.v2.equalsX(0) && -1) ||
-      a.centroid.angleNorm - b.centroid.angleNorm;
+      a.centroid.angle - b.centroid.angle;
   }
 
   constructor(v1: Vector, v2: Vector, shape?: Shape) {
@@ -41,9 +41,6 @@ export default class LineSegment {
   get angle() {
     if (this._angle === undefined) {
       this._angle = this.v1.angleTo(this.v2);
-      this._angle = this._angle < -(Math.PI / 2) - 0.001
-        ? this._angle + (Math.PI * 2)
-        : this._angle;
     }
 
     return this._angle;

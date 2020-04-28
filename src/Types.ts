@@ -4,7 +4,7 @@ export type TypeAction = 'm' | 'r';
 export type TypePoint = 'v' | 'l';
 export type TypeShape = 3 | 4 | 6 | 8 | 12;
 
-export type TypeVectorJS = [number, number, number];
+export type TypeVectorJS = [number, number];
 export type TypeLineSegmentJS = [TypeVectorJS, TypeVectorJS];
 export type TypeShapeJS = [TypeVectorJS[], number, number];
 export type TypeGroupJS = TypeShapeJS[];
@@ -39,4 +39,12 @@ export interface AntwerpData {
   stages: number;
   stagesPlacement: number;
   transforms: TransformJS[];
+}
+
+export interface AntwerpOptions {
+  configuration: string;
+  height: number;
+  maxRepeat?: number;
+  shapeSize: number;
+  width: number;
 }
