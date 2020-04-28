@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useResizeObserver, Alert, Appear, Flex, FlexProps, Text } from 'preshape';
-import { AntwerpData } from './Types';
+import { AntwerpData, AntwerpOptions } from './Types';
 import AntwerpDrawer from './AntwerpDrawer';
+import { AntwerpQueueContext } from './AntwerpQueue';
 import toShapes from './toShapes';
 
 export interface AntwerpProps extends FlexProps {
@@ -9,35 +10,43 @@ export interface AntwerpProps extends FlexProps {
   colorMethod?: 'placement' | 'transform';
   colorScale?: (t: number) => string;
   configuration: string;
-  disableRepeating?: boolean;
   maxRepeat?: number;
   shapeSize: number;
-  showAxis?: boolean;
+  showAxis15?: boolean;
+  showAxis90?: boolean;
   showTransforms?: boolean;
-  refSvg?: React.Ref<SVGSVGElement | null>;
+  refSvg?: React.MutableRefObject<SVGSVGElement | null>;
   worker?: Worker;
 }
 
-const Antwerp = (props: AntwerpProps) => {
+const Antwerp: React.RefForwardingComponent<HTMLDivElement, AntwerpProps> = (props, ref) => {
   const {
     animate,
     colorMethod,
     colorScale,
     configuration,
-    disableRepeating,
     maxRepeat,
     shapeSize,
-    showAxis,
+    showAxis15,
+    showAxis90,
     showTransforms,
     refSvg,
     worker,
     ...rest
   } = props;
 
+  const { pushToQueue } = React.useContext(AntwerpQueueContext);
   const [size, refSize, sizeNode] = useResizeObserver<HTMLDivElement>();
   const refDrawer = React.useRef<AntwerpDrawer>();
+  const refShouldSetData = React.useRef(true);
   const refWorker = React.useRef<Worker>();
   const [data, setData] = React.useState<AntwerpData | null>();
+
+  const handleSetData = (data: AntwerpData) => {
+    if (refShouldSetData.current) {
+      setData(data);
+    }
+  };
 
   React.useLayoutEffect(() => {
     if (sizeNode && !refDrawer.current) {
@@ -50,10 +59,10 @@ const Antwerp = (props: AntwerpProps) => {
   }, [sizeNode]);
 
   React.useEffect(() => {
-    if (worker && !refWorker.current) {
+    if (worker && !refWorker.current && !pushToQueue) {
       refWorker.current = worker;
-      refWorker.current.onmessage = ({ data }) => setData(data);
-    } else if (!worker && refWorker.current) {
+      refWorker.current.onmessage = ({ data }) => handleSetData(data);
+    } else if ((!worker || pushToQueue) && refWorker.current) {
       refWorker.current.terminate();
     }
 
@@ -62,12 +71,11 @@ const Antwerp = (props: AntwerpProps) => {
         refWorker.current.terminate();
       }
     };
-  }, [worker]);
+  }, [pushToQueue, worker]);
 
   React.useEffect(() => {
-    const options = {
+    const options: AntwerpOptions = {
       configuration: configuration,
-      disableRepeating: disableRepeating,
       height: size.height,
       maxRepeat: maxRepeat === undefined || maxRepeat < 0 ? undefined : maxRepeat,
       shapeSize: shapeSize,
@@ -75,13 +83,15 @@ const Antwerp = (props: AntwerpProps) => {
     };
 
     if (size.height && size.width) {
-      if (refWorker.current) {
+      if (pushToQueue) {
+        pushToQueue(options).then(handleSetData);
+      } else if (refWorker.current) {
         refWorker.current.postMessage(options);
       } else {
         setData(toShapes(options));
       }
     }
-  }, [configuration, disableRepeating, maxRepeat, shapeSize, size]);
+  }, [configuration, pushToQueue, maxRepeat, shapeSize, size]);
 
   React.useEffect(() => {
     if (data) {
@@ -89,30 +99,46 @@ const Antwerp = (props: AntwerpProps) => {
         animate,
         colorMethod,
         colorScale,
-        showAxis,
+        showAxis15,
+        showAxis90,
         showTransforms,
       });
     }
   }, [animate, colorMethod, colorScale, data]);
 
   React.useEffect(() => {
-    if (showAxis) {
-      refDrawer.current?.drawAxis();
-    } else {
-      refDrawer.current?.removeAxis();
+    if (refDrawer.current) {
+      refDrawer.current.opts.showAxis15 = showAxis15;
+      refDrawer.current.opts.showAxis90 = showAxis90;
+
+      if (showAxis15 || showAxis90) {
+        refDrawer.current.drawAxis();
+      } else {
+        refDrawer.current.removeAxis();
+      }
     }
-  }, [showAxis]);
+  }, [showAxis15, showAxis90]);
 
   React.useEffect(() => {
-    if (showTransforms) {
-      refDrawer.current?.drawTransforms();
-    } else {
-      refDrawer.current?.removeTransforms();
+    if (refDrawer.current) {
+      refDrawer.current.opts.showTransforms = showTransforms;
+
+      if (showTransforms) {
+        refDrawer.current.drawTransforms();
+      } else {
+        refDrawer.current.removeTransforms();
+      }
     }
   }, [showTransforms]);
 
+  React.useEffect(() => {
+    return () => {
+      refShouldSetData.current = false;
+    };
+  }, []);
+
   return (
-    <Flex { ...rest } container>
+    <Flex { ...rest } container ref={ ref }>
       <Flex
           absolute="edge-to-edge"
           backgroundColor="background-shade-3"
@@ -143,4 +169,4 @@ const Antwerp = (props: AntwerpProps) => {
   );
 };
 
-export default Antwerp;
+export default React.forwardRef(Antwerp);
