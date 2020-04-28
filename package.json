@@ -19,6 +19,7 @@
     "test": "jest ./test"
   },
   "dependencies": {
+    "firebase": "^7.14.2",
     "open-color": "^1.7.0",
     "two.js": "^0.7.0-stable.1"
   },

@@ -6,9 +6,10 @@ export interface Configuration {
 }
 
 export type TypeColorScale =
-  'YlGnBu' |
+  'Plain' |
   'Plasma' |
   'Preshape Theme' |
   'RdPu' |
   'Spectral' |
-  'Viridis';
+  'Viridis' |
+  'YlGnBu';

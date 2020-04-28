@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useLocalStorage, useMatchMedia, useTheme, Flex, Icon, Link, List, ListItem, Text, ThemeSwitcher, TypeTheme } from 'preshape';
+import { useLocalStorage, useMatchMedia, useTheme, Flex, Icon, Link, List, ListItem, Text, ThemeSwitcher, Tooltip, TypeTheme } from 'preshape';
 import { URLStateContext } from './URLState';
 import About from './About';
 import Editor from './Editor';
@@ -61,7 +61,9 @@ export default () => {
                 { ({ match }) => (
                   <ListItem separator="|">
                     <Link active={ !!match } title="Editor" to={ `/?${search}` }>
-                      <Icon name="Pencil" size="1.25rem" />
+                      <Tooltip content="Editor">
+                        { (props) => <Icon { ...props } name="Pencil" size="1.25rem" /> }
+                      </Tooltip>
                     </Link>
                   </ListItem>
                 ) }
@@ -71,7 +73,9 @@ export default () => {
                 { ({ match }) => (
                   <ListItem separator="|">
                     <Link active={ !!match } title="Library" to={ `/library?${search}` }>
-                      <Icon name="Book" size="1.25rem" />
+                      <Tooltip content="Library">
+                        { (props) => <Icon { ...props } name="Book" size="1.25rem" /> }
+                      </Tooltip>
                     </Link>
                   </ListItem>
                 ) }
@@ -81,7 +85,9 @@ export default () => {
                 { ({ match }) => (
                   <ListItem separator="|">
                     <Link active={ !!match } title="Settings" to={ `/settings?${search}` }>
-                      <Icon name="Cog" size="1.25rem" />
+                      <Tooltip content="Settings">
+                        { (props) => <Icon { ...props } name="Cog" size="1.25rem" /> }
+                      </Tooltip>
                     </Link>
                   </ListItem>
                 ) }
@@ -91,7 +97,9 @@ export default () => {
                 { ({ match }) => (
                   <ListItem separator="|">
                     <Link active={ !!match } title="About" to={ `/about?${search}` }>
-                      <Icon name="Info" size="1.25rem" />
+                      <Tooltip content="About">
+                        { (props) => <Icon { ...props } name="Info" size="1.25rem" /> }
+                      </Tooltip>
                     </Link>
                   </ListItem>
                 ) }
@@ -99,7 +107,9 @@ export default () => {
 
               <ListItem separator="|">
                 <Link href="https://github.com/HHogg/antwerp" target="Github" title="Github">
-                  <Icon name="Github" size="1.25rem" />
+                  <Tooltip content="Github">
+                    { (props) => <Icon { ...props } name="Github" size="1.25rem" /> }
+                  </Tooltip>
                 </Link>
               </ListItem>
 

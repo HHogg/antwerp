@@ -4,6 +4,7 @@ import { colorLightShade1, themes, TypeTheme } from 'preshape';
 import { TypeColorScale } from '../Types';
 
 export const colorScales: TypeColorScale[] = [
+  'Plain',
   'Plasma',
   'Preshape Theme',
   'RdPu',
@@ -14,6 +15,7 @@ export const colorScales: TypeColorScale[] = [
 
 export default (scale: TypeColorScale, theme: TypeTheme) => {
   switch (scale) {
+    case 'Plain': return undefined;
     case 'Plasma': return d3ScaleChromatic.interpolatePlasma;
     case 'RdPu': return d3ScaleChromatic.interpolateRdBu;
     case 'Spectral': return d3ScaleChromatic.interpolateSpectral;

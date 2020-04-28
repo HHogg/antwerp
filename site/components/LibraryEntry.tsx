@@ -3,6 +3,8 @@ import { Antwerp } from 'antwerp';
 import { Flex, Link, LinkProps, Text } from 'preshape';
 import { Configuration } from '../Types';
 import getColorScale from '../utils/getColorScale';
+import { URLStateContext } from './URLState';
+import { RootContext } from './Root';
 
 interface Props extends Configuration, LinkProps {
   active: boolean;
@@ -20,7 +22,15 @@ export default (props: Props) => {
     ...rest
   } = props;
 
-  const worker = React.useMemo(() => new Worker('../../src/AntwerpWorker.js'), []);
+  const {
+    colorMethod,
+    colorScale,
+    showTransforms,
+  } = React.useContext(URLStateContext);
+
+  const {
+    theme,
+  } = React.useContext(RootContext);
 
   return (
     <Link { ...rest }
@@ -33,14 +43,13 @@ export default (props: Props) => {
         padding="x3">
       <Flex margin="x3">
         <Antwerp
-            colorScale={ getColorScale('Spectral', 'day') }
+            colorMethod={ colorMethod }
+            colorScale={ getColorScale(colorScale, theme) }
             configuration={ gomJauHogg }
             height="200px"
             maxRepeat={ 3 }
-            shapeSize={ 50 }
-            showAxis
-            showTransforms
-            worker={ worker } />
+            shapeSize={ 30 }
+            showTransforms={ showTransforms } />
       </Flex>
 
       <Text ellipsis size="x1" strong>{ cundyRollett }</Text>

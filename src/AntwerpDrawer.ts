@@ -151,7 +151,6 @@ export default class TilingDrawer {
       if (toStage === undefined || shape[1] <= toStage) {
         this.groupShapes?.add(createPolygon({
           fill: getShapeFill(shape),
-          opacity: this.opts.showTransforms ? 0.5 : 1,
           stroke: colorDarkShade1,
           strokeWidth: borderSizeX1Px,
           vertices: shape[0],

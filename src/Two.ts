@@ -98,7 +98,7 @@ export const createPolygon = (props: ShapeProps & { curved?: boolean; vertices: 
   props);
 };
 
-const arcsToAnchors = (arcs: ArcProps[]) => {
+const arcsToAnchors = (arcs: ArcProps[], closed?: boolean) => {
   const R = Two.Resolution * 3;
   const anchors = Array
     .from({ length: (R * arcs.length) })

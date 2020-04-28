@@ -26,7 +26,8 @@ export default () => {
     maxRepeat,
     onUpdateUrlState,
     push,
-    showAxis,
+    showAxis15,
+    showAxis90,
     shapeSize,
     showTransforms,
   } = React.useContext(URLStateContext);
@@ -70,8 +71,8 @@ export default () => {
 
         <PlacementManager trigger="click">
           <PlacementReference>
-            { ({ visible, ...rest }) => (
-              <InputLabel clickable { ...rest } margin="x1">
+            { (props, { visible }) => (
+              <InputLabel clickable { ...props } margin="x1">
                 <Input readOnly titlecase value={ `Color by: ${colorMethod}` } />
                 <InputAddon>
                   <Icon name={ visible ? 'ChevronUp' : 'ChevronDown' } size="1.25rem" />
@@ -83,6 +84,8 @@ export default () => {
           <Placement
               elevate
               minWidth="reference"
+              textColor="text-shade-1"
+              theme="day"
               unrender
               zIndex={ 1 }>
             <Options>
@@ -102,8 +105,8 @@ export default () => {
 
         <PlacementManager trigger="click">
           <PlacementReference>
-            { ({ visible, ...rest }) => (
-              <InputLabel clickable { ...rest } margin="x1">
+            { (props, { visible }) => (
+              <InputLabel clickable { ...props } margin="x1">
                 <Input readOnly value={ `Color scale: ${colorScale}` } />
                 <InputAddon>
                   <Icon name={ visible ? 'ChevronUp' : 'ChevronDown' } size="1.25rem" />
@@ -115,6 +118,8 @@ export default () => {
           <Placement
               elevate
               minWidth="reference"
+              textColor="text-shade-1"
+              theme="day"
               unrender
               zIndex={ 1 }>
             <Options>
@@ -131,10 +136,17 @@ export default () => {
         </PlacementManager>
 
         <CheckBox
-            checked={ showAxis }
+            checked={ showAxis15 }
             margin="x1"
-            onChange={ () => onUpdateUrlState({ showAxis: !showAxis }) }>
-          Show Axis
+            onChange={ () => onUpdateUrlState({ showAxis15: !showAxis15 }) }>
+          Show Angle Guides 15°
+        </CheckBox>
+
+        <CheckBox
+            checked={ showAxis90 }
+            margin="x1"
+            onChange={ () => onUpdateUrlState({ showAxis90: !showAxis90 }) }>
+          Show Angle Guides 90°
         </CheckBox>
 
         <CheckBox

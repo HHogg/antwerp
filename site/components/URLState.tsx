@@ -15,20 +15,20 @@ export interface URLState {
   colorMethod: 'placement' | 'transform';
   colorScale: TypeColorScale;
   configuration: string;
-  disableColoring: boolean;
   fadeConnectedShapes: boolean;
   maxRepeat: number;
-  showAxis: boolean;
+  showAxis15: boolean;
+  showAxis90: boolean;
   shapeSize: number;
   showTransforms: boolean;
 }
 
 const urlStateDecoders: URLStateDecoders<URLState> = {
   animate: (v) => JSON.parse(v),
-  disableColoring: (v) => JSON.parse(v),
   fadeConnectedShapes : (v) => JSON.parse(v),
   maxRepeat: (v) => parseInt(v),
-  showAxis: (v) => JSON.parse(v),
+  showAxis15: (v) => JSON.parse(v),
+  showAxis90: (v) => JSON.parse(v),
   shapeSize: (v) => parseInt(v),
   showTransforms: (v) => JSON.parse(v),
 };
@@ -36,12 +36,12 @@ const urlStateDecoders: URLStateDecoders<URLState> = {
 const urlStateDefaults: URLStateDefaults<URLState> = {
   animate: false,
   colorMethod: 'placement',
-  colorScale: 'Spectral',
-  configuration: '6-3-3,3-3/r60/r45(3e)',
-  disableColoring: false,
+  colorScale: 'Preshape Theme',
+  configuration: '3-4-3,3/m30/m(4)',
   fadeConnectedShapes: false,
   maxRepeat: 3,
-  showAxis: false,
+  showAxis15: false,
+  showAxis90: false,
   shapeSize: 96,
   showTransforms: false,
 };
@@ -52,10 +52,10 @@ const urlStateValidators: URLStateValidators<URLState> = {
   animate: (v) => v === true || v === false,
   colorMethod: (v) => v === 'placement' || v === 'transform',
   colorScale: (v) => colorScales.includes(v),
-  disableColoring: (v) => v === true || v === false,
   fadeConnectedShapes: (v) => v === true || v === false,
   maxRepeat: (v) => v !== undefined && Number.isFinite(v) && v >= -1,
-  showAxis: (v) => v === true || v === false,
+  showAxis15: (v) => v === true || v === false,
+  showAxis90: (v) => v === true || v === false,
   shapeSize: (v) => v !== undefined && Number.isFinite(v) && v >= 60 && v <= 200,
   showTransforms: (v) => v === true || v === false,
 };
@@ -68,15 +68,15 @@ export const URLStateContext = React.createContext<URLState & {
   animate: false,
   colorMethod: 'placement',
   colorScale: 'Preshape Theme',
-  configuration: '6-3-3,3-3/r60/r45(3h)',
-  disableColoring: false,
+  configuration: '3-4-3,3/m30/m(4)',
   fadeConnectedShapes: false,
   maxRepeat: 3,
   onUpdateUrlState: () => {},
   push: () => {},
   search: '',
   shapeSize: 96,
-  showAxis: false,
+  showAxis15: false,
+  showAxis90: false,
   showTransforms: false,
 });
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import FileSaver from 'file-saver';
-import { Flex, Form, Icon, Input, Link } from 'preshape';
+import { Flex, Form, Icon, Input, Link, Tooltip } from 'preshape';
 import { Antwerp } from 'antwerp';
 import { URLStateContext } from './URLState';
 import { RootContext } from './Root';
@@ -14,7 +14,8 @@ export default () => {
     configuration,
     maxRepeat,
     onUpdateUrlState,
-    showAxis,
+    showAxis15,
+    showAxis90,
     shapeSize,
     showTransforms,
   } = React.useContext(URLStateContext);
@@ -64,7 +65,8 @@ export default () => {
             maxRepeat={ maxRepeat }
             refSvg={ refSVG }
             shapeSize={ shapeSize }
-            showAxis={ showAxis }
+            showAxis15={ showAxis15 }
+            showAxis90={ showAxis90 }
             showTransforms={ showTransforms }
             worker={ worker } />
       </Flex>
@@ -92,27 +94,35 @@ export default () => {
         </Flex>
 
         <Flex backgroundColor="background-shade-1">
-          <Link
-              display="block"
-              onClick={ handleUpdateConfiguration }
-              paddingHorizontal="x6"
-              paddingVertical="x3"
-              size="x2"
-              strong>
-            <Icon name="Refresh" size="1.25rem" />
-          </Link>
+          <Tooltip content="Refresh">
+            { (props) => (
+              <Link { ...props }
+                  display="block"
+                  onClick={ handleUpdateConfiguration }
+                  paddingHorizontal="x6"
+                  paddingVertical="x3"
+                  size="x2"
+                  strong>
+                <Icon name="Refresh" size="1.25rem" />
+              </Link>
+            ) }
+          </Tooltip>
         </Flex>
 
         <Flex backgroundColor="background-shade-1">
-          <Link
-              display="block"
-              onClick={ handleDownload }
-              paddingHorizontal="x6"
-              paddingVertical="x3"
-              size="x2"
-              strong>
-            <Icon name="Save" size="1.25rem" />
-          </Link>
+          <Tooltip content="Save to SVG">
+            { (props) => (
+              <Link { ...props }
+                  display="block"
+                  onClick={ handleDownload }
+                  paddingHorizontal="x6"
+                  paddingVertical="x3"
+                  size="x2"
+                  strong>
+                <Icon name="Save" size="1.25rem" />
+              </Link>
+            ) }
+          </Tooltip>
         </Flex>
       </Flex>
     </Flex>
