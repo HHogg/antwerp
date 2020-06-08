@@ -20,7 +20,6 @@ import { colorScales } from '../utils/getColorScale';
 
 export default () => {
   const {
-    animate,
     colorMethod,
     colorScale,
     maxRepeat,
@@ -39,7 +38,7 @@ export default () => {
     push('/');
   };
 
-  const handleNumberChange = (event: React.FormEvent<HTMLInputElement>, setState: (value: string) => void, prop: keyof URLState, min: number = -Infinity, max: number = Infinity) => {
+  const handleNumberChange = (event: React.FormEvent<HTMLInputElement>, setState: (value: string) => void, prop: keyof URLState, min = -Infinity, max = Infinity) => {
     const { value } = event.target as HTMLInputElement;
     const number = Math.max(min, Math.min(max, parseFloat(value)));
 
@@ -62,13 +61,6 @@ export default () => {
       </ModalHeader>
 
       <ModalBody>
-        <CheckBox
-            checked={ animate }
-            margin="x1"
-            onChange={ () => onUpdateUrlState({ animate: !animate }) }>
-          Animate Stages
-        </CheckBox>
-
         <PlacementManager trigger="click">
           <PlacementReference>
             { (props, { visible }) => (

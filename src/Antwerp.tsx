@@ -6,7 +6,6 @@ import { AntwerpQueueContext } from './AntwerpQueue';
 import toShapes from './toShapes';
 
 export interface AntwerpProps extends FlexProps {
-  animate?: boolean;
   colorMethod?: 'placement' | 'transform';
   colorScale?: (t: number) => string;
   configuration: string;
@@ -21,7 +20,6 @@ export interface AntwerpProps extends FlexProps {
 
 const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
   const {
-    animate,
     colorMethod,
     colorScale,
     configuration,
@@ -97,7 +95,6 @@ const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
   React.useEffect(() => {
     if (data) {
       refDrawer.current?.draw(size.height, size.width, data, {
-        animate,
         colorMethod,
         colorScale,
         showAxis15,
@@ -105,7 +102,14 @@ const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
         showTransforms,
       });
     }
-  }, [animate, colorMethod, colorScale, data, showAxis15, showAxis90, showTransforms]);
+  }, [
+    colorMethod,
+    colorScale,
+    data,
+    showAxis15,
+    showAxis90,
+    showTransforms,
+  ]);
 
   React.useEffect(() => {
     return () => {

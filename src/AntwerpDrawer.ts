@@ -1,4 +1,4 @@
-import Two from 'two.js';
+import Two, { BoundingClientRect } from 'two.js';
 import openColor from 'open-color';
 import { AntwerpData, TransformJS, TypeShapeJS } from './Types';
 import {
@@ -16,8 +16,6 @@ import {
   createPolygon,
 } from './Two';
 
-const ANIMATE_INTERVAL = 250;
-
 const DEG_90 = Math.PI * 0.5;
 const DEG_180 = Math.PI;
 const DEG_360 = Math.PI * 2;
@@ -30,7 +28,6 @@ const TRANSFORM_ROTATION_POINT_COLOR = openColor.green[6];
 const TRANSFORM_ROTATION_CENTER_COLOR = openColor.green[6];
 
 interface DrawOptions {
-  animate?: boolean;
   colorMethod?: 'placement' | 'transform';
   colorScale?: (t: number) => string;
   fadeConnectedShapes?: boolean;
@@ -40,15 +37,14 @@ interface DrawOptions {
 }
 
 export default class TilingDrawer {
+  bounds?: BoundingClientRect;
   container: HTMLDivElement;
+  data: AntwerpData;
   groupAxis: Two.Group;
   groupRoot: Two.Group;
   groupShapes: Two.Group;
   groupTransforms: Two.Group;
-  interval?: number;
-  data: AntwerpData;
   opts: DrawOptions;
-  toStage?: number;
   two: Two;
 
   constructor(container: HTMLDivElement) {
@@ -57,6 +53,8 @@ export default class TilingDrawer {
     this.opts = {};
     this.two = new Two({
       autostart: true,
+      height: 0,
+      width: 0,
       type: Two.Types.svg,
     }).appendTo(this.container);
 
@@ -66,20 +64,19 @@ export default class TilingDrawer {
     this.groupTransforms = new Two.Group();
   }
 
-  init() {
+  reset() {
     this.two.clear();
     this.two.remove(this.groupRoot);
     this.two.add(this.groupRoot = createGroup());
     this.groupRoot.add(this.groupShapes = createGroup({ x: this.two.width / 2, y: this.two.height / 2 }));
     this.groupRoot.add(this.groupAxis = createGroup());
+    this.groupRoot.add(this.groupInspector = createGroup({ x: this.two.width / 2, y: this.two.height / 2 }));
     this.groupRoot.add(this.groupTransforms = createGroup({ x: this.two.width / 2, y: this.two.height / 2 }));
   }
 
   destroy() {
     this.two.clear();
     this.two.remove();
-    window.clearInterval(this.interval);
-    delete this.interval;
     delete this.two;
   }
 
@@ -90,26 +87,11 @@ export default class TilingDrawer {
     this.two.width = this.two.renderer.width;
     this.two.height = this.two.renderer.height;
 
-    this.init();
+    this.reset();
+    this.drawShapes();
 
-    if (this.interval) {
-      window.clearInterval(this.interval);
-    }
-
-    if (opts.animate) {
-      this.toStage = -1;
-      this.interval = window.setInterval(() => {
-        this.drawShapes((++(this.toStage as number) % (data.stages + 2)) - 1);
-
-        if (opts.showAxis15 || opts.showAxis90) this.drawAxis();
-        if (opts.showTransforms) this.drawTransforms();
-      }, ANIMATE_INTERVAL);
-    } else {
-      this.drawShapes();
-
-      if (opts.showAxis15 || opts.showAxis90) this.drawAxis();
-      if (opts.showTransforms) this.drawTransforms();
-    }
+    if (opts.showAxis15 || opts.showAxis90) this.drawAxis();
+    if (opts.showTransforms) this.drawTransforms();
   }
 
   drawAxis() {

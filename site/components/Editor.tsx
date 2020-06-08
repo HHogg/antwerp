@@ -8,7 +8,6 @@ import getColorScale from '../utils/getColorScale';
 
 export default () => {
   const {
-    animate,
     colorMethod,
     colorScale,
     configuration,
@@ -57,7 +56,6 @@ export default () => {
           direction="vertical"
           grow>
         <Antwerp
-            animate={ animate }
             colorMethod={ colorMethod }
             colorScale={ getColorScale(colorScale, theme) }
             configuration={ configuration }

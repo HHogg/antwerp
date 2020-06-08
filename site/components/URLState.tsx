@@ -11,7 +11,6 @@ import { TypeColorScale } from '../Types';
 import { colorScales } from '../utils/getColorScale';
 
 export interface URLState {
-  animate: boolean;
   colorMethod: 'placement' | 'transform';
   colorScale: TypeColorScale;
   configuration: string;
@@ -24,7 +23,6 @@ export interface URLState {
 }
 
 const urlStateDecoders: URLStateDecoders<URLState> = {
-  animate: (v) => JSON.parse(v),
   fadeConnectedShapes : (v) => JSON.parse(v),
   maxRepeat: (v) => parseInt(v),
   showAxis15: (v) => JSON.parse(v),
@@ -34,7 +32,6 @@ const urlStateDecoders: URLStateDecoders<URLState> = {
 };
 
 const urlStateDefaults: URLStateDefaults<URLState> = {
-  animate: false,
   colorMethod: 'placement',
   colorScale: 'Preshape Theme',
   configuration: '3-4-3,3/m30/m(4)',
@@ -49,7 +46,6 @@ const urlStateDefaults: URLStateDefaults<URLState> = {
 const urlStateEncoders: URLStateEncoders<URLState> = {};
 
 const urlStateValidators: URLStateValidators<URLState> = {
-  animate: (v) => v === true || v === false,
   colorMethod: (v) => v === 'placement' || v === 'transform',
   colorScale: (v) => colorScales.includes(v),
   fadeConnectedShapes: (v) => v === true || v === false,
@@ -65,7 +61,6 @@ export const URLStateContext = React.createContext<URLState & {
   push: (pathname: string) => void;
   search: string;
 }>({
-  animate: false,
   colorMethod: 'placement',
   colorScale: 'Preshape Theme',
   configuration: '3-4-3,3/m30/m(4)',
@@ -82,7 +77,7 @@ export const URLStateContext = React.createContext<URLState & {
 
 const URLState: React.FC<{}> = (props) => {
   const history = useHistory();
-  const location = useLocation();
+  const { search } = useLocation();
   const refSearch = React.useRef(location.search);
   const state = useUrlState<URLState>({
     decoders: urlStateDecoders,
@@ -92,7 +87,7 @@ const URLState: React.FC<{}> = (props) => {
       refSearch.current = search;
       history.replace({ search });
     },
-    search: location.search,
+    search: search,
     validators: urlStateValidators,
   });
 
@@ -104,8 +99,8 @@ const URLState: React.FC<{}> = (props) => {
   };
 
   React.useEffect(() => {
-    refSearch.current = location.search;
-  }, [location.search]);
+    refSearch.current = search;
+  }, [search]);
 
   return (
     <URLStateContext.Provider { ...props } value={ { ...state, push } } />
