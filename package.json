@@ -21,6 +21,7 @@
   "dependencies": {
     "firebase": "^7.14.2",
     "open-color": "^1.7.0",
+    "parcel-plugin-html-externals": "^0.2.0",
     "two.js": "^0.7.0-stable.1"
   },
   "peerDependencies": {
@@ -38,16 +39,12 @@
     "@types/react-dom": "*",
     "@types/react-router-dom": "*",
     "@types/two.js": "*",
-    "@typescript-eslint/eslint-plugin": "^1.13.0",
-    "@typescript-eslint/parser": "^1.13.0",
     "autoprefixer": "^9.4.10",
-    "babel-eslint": "^10.0.1",
     "caniuse-lite": "^1.0.30000697",
     "d3-scale": "^3.2.1",
     "d3-scale-chromatic": "^1.5.0",
-    "eslint": "^5.15.1",
-    "eslint-config-preshape": "^1.1.0",
-    "eslint-plugin-react": "^7.12.4",
+    "eslint": "^7.0.0",
+    "eslint-config-preshape": "^2.0.0",
     "file-saver": "^2.0.2",
     "firebase-tools": "^7.14.0",
     "identity-obj-proxy": "^3.0.0",
@@ -68,6 +65,9 @@
   },
   "alias": {
     "antwerp": "./src"
+  },
+  "externals": {
+    "/__/**/*": false
   },
   "jest": {
     "moduleNameMapper": {
