@@ -1,6 +1,6 @@
 {
-  "name": "antwerp",
-  "version": "3.0.0",
+  "name": "@hhogg/antwerp",
+  "version": "3.0.2",
   "description": "Application for Nets and Tessellations With Edge-to-edge Regular Polygons",
   "repository": "git@github.com:HHogg/antwerp.git",
   "author": "Harry Hogg <harry@hogg.io>",
@@ -9,7 +9,11 @@
   "esnext": "lib/esn/index.js",
   "typings": "lib/cjs/index.d.ts",
   "scripts": {
-    "build": "rm -rf public && parcel build site/index.html -d public",
+    "build": "yarn build:site",
+    "build:lib": "rm -rf ./lib && yarn build:lib:cjs && yarn build:lib:esn",
+    "build:lib:esn": "tsc -p src -m esnext -t esnext --outDir lib/esn",
+    "build:lib:cjs": "tsc -p src --outDir lib/cjs",
+    "build:site": "rm -rf public && parcel build site/index.html -d public",
     "deploy": "firebase deploy",
     "lint:css": "stylelint site/**/*.css",
     "lint:js": "eslint site/**/*.ts site/**/*.tsx",
@@ -19,10 +23,11 @@
     "test": "jest ./test"
   },
   "dependencies": {
-    "firebase": "^7.14.2",
     "open-color": "^1.7.0",
-    "parcel-plugin-html-externals": "^0.2.0",
-    "two.js": "^0.7.0-stable.1"
+    "two.js": "0.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "peerDependencies": {
     "preshape": "^5.0.0",
@@ -38,7 +43,7 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "@types/react-router-dom": "*",
-    "@types/two.js": "*",
+    "@types/two.js": "^0.7.4",
     "autoprefixer": "^9.4.10",
     "caniuse-lite": "^1.0.30000697",
     "d3-scale": "^3.2.1",
@@ -51,6 +56,7 @@
     "jest": "^25.4.0",
     "lodash.groupby": "^4.6.0",
     "parcel-bundler": "^1.12.3",
+    "parcel-plugin-html-externals": "^0.2.0",
     "postcss-preset-env": "^6.6.0",
     "preshape": "^5.0.1",
     "react": "^16.13.1",
@@ -64,7 +70,7 @@
     "typescript": "^3.4.5"
   },
   "alias": {
-    "antwerp": "./src"
+    "@hhogg/antwerp": "./src"
   },
   "externals": {
     "/__/**/*": false
