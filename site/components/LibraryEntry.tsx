@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Antwerp } from 'antwerp';
+import { Antwerp } from '@hhogg/antwerp';
 import { Flex, Link, LinkProps, Text } from 'preshape';
 import { Configuration } from '../Types';
 import getColorScale from '../utils/getColorScale';

@@ -1,4 +1,4 @@
-import { AntwerpData, AntwerpOptions, TypeShape, Transform, TransformJS } from './Types';
+import { AntwerpData, AntwerpOptions, TypeShape, Transform, TransformJS, TypeTransformPoint } from './Types';
 import toEntities from './toEntities';
 import Group from './Group';
 import LineSegment from './LineSegment';
@@ -80,29 +80,15 @@ const getSeedShape = (n: number, r: number) => {
   }
 };
 
-const getIntersectingPoint = (root: Group, transform: Transform) => {
-  const { actionAngle, pointIndex } = transform;
-
-  if (root.disconnectedVectorDistanceMax !== undefined) {
-    return root.getIntersectingPoints(new LineSegment(
-      new Vector(0, 0),
-      new Vector(
-        Math.cos(actionAngle) * root.disconnectedVectorDistanceMax,
-        Math.sin(actionAngle) * root.disconnectedVectorDistanceMax,
-      ),
-    ))[pointIndex - 1];
-  }
-};
-
 const transformMirrorPoint = (root: Group, stage: Stage, transform: Transform) => {
   if (!transform.point) return;
 
-  const { actionAngle, point } = transform;
-  const mirrorAngle = point[2] === 'l' ? point[1] : actionAngle + Math.PI / 2;
+  const { point } = transform;
+  const mirrorAngle = point[2] === 'l' ? point[1] : point[1] + Math.PI / 2;
 
   root.add(root
     .clone()
-    .setStage(stage.value++)
+    .setStage(++stage.value)
     .reflect(new LineSegment(
       new Vector(
         Math.cos(mirrorAngle - DEG_180),
@@ -127,7 +113,7 @@ const transformMirrorCenter = (root: Group, stage: Stage, transform: Transform) 
   while (actionAngle < DEG_360) {
     root.add(root
       .clone()
-      .setStage(stage.value++)
+      .setStage(++stage.value)
       .reflect(new LineSegment(
         new Vector(0, 0),
         new Vector(
@@ -147,7 +133,7 @@ const transformRotationPoint = (root: Group, stage: Stage, transform: Transform)
   if (point) {
     root.add(root
       .clone()
-      .setStage(stage.value++)
+      .setStage(++stage.value)
       .rotate(DEG_180, point[0])
     );
   }
@@ -164,7 +150,7 @@ const transformRotationCenter = (root: Group, stage: Stage, transform: Transform
   while (actionAngle < DEG_360) {
     root.add(root
       .clone()
-      .setStage(stage.value++)
+      .setStage(++stage.value)
       .rotate(actionAngle)
     );
 
@@ -216,6 +202,7 @@ export default (props: AntwerpOptions): AntwerpData => {
   const stagePlacement: Stage = { value: 0 };
   const seedShape = getSeedShape(seed, shapeSize / 2);
   const root = new Group();
+  const vertices: TypeTransformPoint[][] = [];
 
   try {
     if (!seed) {
@@ -224,6 +211,7 @@ export default (props: AntwerpOptions): AntwerpData => {
         stages: 0,
         stagesPlacement: 0,
         transforms: [],
+        vertices: [],
       };
     }
 
@@ -232,8 +220,8 @@ export default (props: AntwerpOptions): AntwerpData => {
     }
 
     root.add(seedShape
-      .setStage(stage.value)
-      .setStagePlacement(stagePlacement.value++));
+      .setStage(++stage.value)
+      .setStagePlacement(++stagePlacement.value));
 
     /** Stage 2 */
     for (let i = 0; i < shapes.length; i++) {
@@ -256,7 +244,7 @@ export default (props: AntwerpOptions): AntwerpData => {
               } else {
                 const shape = new Shape(shapes[i][j])
                   .fromLineSegment(lss[k])
-                  .setStagePlacement(stagePlacement.value++);
+                  .setStagePlacement(++stagePlacement.value);
 
                 group.addShape(shape);
                 root.addLineSegments(shape.lineSegments);
@@ -277,17 +265,19 @@ export default (props: AntwerpOptions): AntwerpData => {
     }
 
     root.flatten();
+    vertices.push(root.getVertices());
 
     /** Stage 3 */
-    for (const tn of transforms) {
-      if (tn.pointIndex) {
-        if (!(tn.point = getIntersectingPoint(root, tn))) {
-          throw ErrorTransformNoIntersectionPoint(tn.string);
-        }
+    for (let i = 0; i < transforms.length; i++) {
+      const tn = transforms[i];
+
+      if (tn.pointIndex && !(tn.point = vertices[i][tn.pointIndex - 1])) {
+        throw ErrorTransformNoIntersectionPoint(tn.string);
       }
 
       transform(root, stage, tn);
       root.connectLineSegments();
+      vertices.push(root.getVertices());
     }
 
     /** Stage 4 */
@@ -326,16 +316,20 @@ export default (props: AntwerpOptions): AntwerpData => {
     return {
       error: e,
       shapes: root.toJS(),
-      stages: stage.value - 1,
-      stagesPlacement: stagePlacement.value - 1,
+      stages: stage.value,
+      stagesPlacement: stagePlacement.value,
       transforms: transforms.map(transformToJS),
+      vertices: vertices[vertices.length - 1]
+        .map(([vector]) => vector.toJS()),
     };
   }
 
   return {
     shapes: root.toJS(),
-    stages: stage.value - 1,
-    stagesPlacement: stagePlacement.value - 1,
+    stages: stage.value,
+    stagesPlacement: stagePlacement.value,
     transforms: transforms.map(transformToJS),
+    vertices: vertices[vertices.length - 1]
+        .map(([vector]) => vector.toJS()),
   };
 };

@@ -20,6 +20,7 @@ import { colorScales } from '../utils/getColorScale';
 
 export default () => {
   const {
+    animate,
     colorMethod,
     colorScale,
     maxRepeat,
@@ -29,6 +30,7 @@ export default () => {
     showAxis90,
     shapeSize,
     showTransforms,
+    showVertices,
   } = React.useContext(URLStateContext);
 
   const [maxRepeatState, setMaxRepeatState] = React.useState(maxRepeat.toString());
@@ -61,6 +63,13 @@ export default () => {
       </ModalHeader>
 
       <ModalBody>
+        <CheckBox
+            checked={ animate }
+            margin="x1"
+            onChange={ () => onUpdateUrlState({ animate: !animate }) }>
+          Animate Stages
+        </CheckBox>
+
         <PlacementManager trigger="click">
           <PlacementReference>
             { (props, { visible }) => (
@@ -146,6 +155,13 @@ export default () => {
             margin="x1"
             onChange={ () => onUpdateUrlState({ showTransforms: !showTransforms }) }>
           Show Transformations
+        </CheckBox>
+
+        <CheckBox
+            checked={ showVertices }
+            margin="x1"
+            onChange={ () => onUpdateUrlState({ showVertices: !showVertices }) }>
+          Show Vertices
         </CheckBox>
 
         <InputLabel label="Maximum Transform Repeats" margin="x1">

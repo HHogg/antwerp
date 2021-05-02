@@ -17,13 +17,18 @@ export default class Vector {
   y: number;
 
   constructor(x: number, y: number) {
-    this.angle = this.angle = getAngle(Math.atan2(y, x));
+    this.angle = getAngle(Math.atan2(y, x));
     this.x = x;
     this.y = y;
   }
 
   add(v: Vector) {
     return this.translate(v.x, v.y);
+  }
+
+  angleEquals(v: Vector) {
+    const d = v.angle - this.angle;
+    return d >= -ANGLE_PRECISION && d <= ANGLE_PRECISION;
   }
 
   angleTo(v: Vector) {

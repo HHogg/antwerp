@@ -32,7 +32,9 @@ const toTransform = (transform: string): Transform | undefined => {
     if ((action === 'm' || action === 'r')) {
       return {
         action: action,
-        actionAngle: toRadians(+actionAngle) - (pointIndex ? (Math.PI / 2) : 0),
+        actionAngle: pointIndex
+          ? undefined
+          : toRadians(+actionAngle),
         pointIndex: pointIndex ? +pointIndex : 0,
         string: transform,
       };

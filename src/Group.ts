@@ -5,13 +5,6 @@ import Vector from './Vector';
 
 type Item = Group | Shape;
 
-const BUFFER = 0.018 * 2.5;
-
-const isAngleClose = (a1: number, a2: number) => {
-  const d = a1 - a2;
-  return d > -BUFFER && d < BUFFER;
-};
-
 export default class Group {
   disconnectedVectorDistanceMax?: number;
   disconnectedVectorDistanceMin?: number;
@@ -135,34 +128,32 @@ export default class Group {
     return this;
   }
 
-  getIntersectingPoints(ls1: LineSegment): TypeTransformPoint[] {
-    const vectors: TypeTransformPoint[] = [];
+  getVertices() {
+    const vertices: TypeTransformPoint[] = [];
 
     this.items.forEach((item) => {
       if (item instanceof Shape) {
-        if (isAngleClose(ls1.angle, item.centroid.angle)) {
-          vectors.push([item.centroid, ls1.angle, 'v']);
+        vertices.push([item.centroid, item.centroid.angle, 'v']);
+      }
+    });
+
+    this.lineSegments.forEach(({ angle, centroid, v1, v2 }) => {
+      vertices.push(
+        [v1, v1.angle, 'v'],
+        [centroid, angle, 'l'],
+        [v2, v2.angle, 'v'],
+      );
+    });
+
+    return vertices
+      .filter(([a], i) => !a.equals(new Vector(0, 0)) && vertices.slice(i + 1).every(([b]) => !b.equals(a)))
+      .sort(([a], [b]) => {
+        if (a.angleEquals(b)) {
+          return a.distanceTo() - b.distanceTo();
         }
-      }
-    });
 
-    this.lineSegments.forEach((ls2) => {
-      if (isAngleClose(ls2.v1.angle, ls1.angle)) {
-        vectors.push([ls2.v1, ls1.angle, 'v']);
-      }
-
-      if (isAngleClose(ls2.centroid.angle, ls1.angle)) {
-        vectors.push([ls2.centroid, ls2.angle, 'l']);
-      }
-
-      if (isAngleClose(ls2.v2.angle, ls1.angle)) {
-        vectors.push([ls2.v2, ls1.angle, 'v']);
-      }
-    });
-
-    return vectors
-      .filter(([a], i) => !a.equals(new Vector(0, 0)) && vectors.slice(i + 1).every(([b]) => !b.equals(a)))
-      .sort(([a], [b]) => a.distanceTo() - b.distanceTo());
+        return a.angle - b.angle;
+      });
   }
 
   setStage(stage: number) {

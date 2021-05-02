@@ -19,7 +19,7 @@ export type TypeEntities = [
 
 export interface Transform {
   action: TypeAction;
-  actionAngle: number;
+  actionAngle?: number;
   point?: TypeTransformPoint;
   pointIndex: number;
   string: string;
@@ -39,6 +39,7 @@ export interface AntwerpData {
   stages: number;
   stagesPlacement: number;
   transforms: TransformJS[];
+  vertices: TypeVectorJS[];
 }
 
 export interface AntwerpOptions {

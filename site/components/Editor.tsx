@@ -1,13 +1,14 @@
 import * as React from 'react';
 import FileSaver from 'file-saver';
 import { Flex, Form, Icon, Input, Link, Tooltip } from 'preshape';
-import { Antwerp } from 'antwerp';
+import { Antwerp } from '@hhogg/antwerp';
 import { URLStateContext } from './URLState';
 import { RootContext } from './Root';
 import getColorScale from '../utils/getColorScale';
 
 export default () => {
   const {
+    animate,
     colorMethod,
     colorScale,
     configuration,
@@ -17,6 +18,7 @@ export default () => {
     showAxis90,
     shapeSize,
     showTransforms,
+    showVertices,
   } = React.useContext(URLStateContext);
 
   const refSVG = React.useRef<SVGSVGElement>(null);
@@ -56,6 +58,7 @@ export default () => {
           direction="vertical"
           grow>
         <Antwerp
+            animateInterval={ animate ? 250 : 0 }
             colorMethod={ colorMethod }
             colorScale={ getColorScale(colorScale, theme) }
             configuration={ configuration }
@@ -66,6 +69,7 @@ export default () => {
             showAxis15={ showAxis15 }
             showAxis90={ showAxis90 }
             showTransforms={ showTransforms }
+            showVertices={ showVertices }
             worker={ worker } />
       </Flex>
 

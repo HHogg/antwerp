@@ -11,6 +11,7 @@ import { TypeColorScale } from '../Types';
 import { colorScales } from '../utils/getColorScale';
 
 export interface URLState {
+  animate: boolean;
   colorMethod: 'placement' | 'transform';
   colorScale: TypeColorScale;
   configuration: string;
@@ -20,18 +21,22 @@ export interface URLState {
   showAxis90: boolean;
   shapeSize: number;
   showTransforms: boolean;
+  showVertices: boolean;
 }
 
 const urlStateDecoders: URLStateDecoders<URLState> = {
+  animate: (v) => JSON.parse(v),
   fadeConnectedShapes : (v) => JSON.parse(v),
   maxRepeat: (v) => parseInt(v),
   showAxis15: (v) => JSON.parse(v),
   showAxis90: (v) => JSON.parse(v),
   shapeSize: (v) => parseInt(v),
   showTransforms: (v) => JSON.parse(v),
+  showVertices: (v) => JSON.parse(v),
 };
 
 const urlStateDefaults: URLStateDefaults<URLState> = {
+  animate: false,
   colorMethod: 'placement',
   colorScale: 'Preshape Theme',
   configuration: '3-4-3,3/m30/m(4)',
@@ -41,11 +46,13 @@ const urlStateDefaults: URLStateDefaults<URLState> = {
   showAxis90: false,
   shapeSize: 96,
   showTransforms: false,
+  showVertices: false,
 };
 
 const urlStateEncoders: URLStateEncoders<URLState> = {};
 
 const urlStateValidators: URLStateValidators<URLState> = {
+  animate: (v) => v === true || v === false,
   colorMethod: (v) => v === 'placement' || v === 'transform',
   colorScale: (v) => colorScales.includes(v),
   fadeConnectedShapes: (v) => v === true || v === false,
@@ -54,6 +61,7 @@ const urlStateValidators: URLStateValidators<URLState> = {
   showAxis90: (v) => v === true || v === false,
   shapeSize: (v) => v !== undefined && Number.isFinite(v) && v >= 60 && v <= 200,
   showTransforms: (v) => v === true || v === false,
+  showVertices: (v) => v === true || v === false,
 };
 
 export const URLStateContext = React.createContext<URLState & {
@@ -61,6 +69,7 @@ export const URLStateContext = React.createContext<URLState & {
   push: (pathname: string) => void;
   search: string;
 }>({
+  animate: false,
   colorMethod: 'placement',
   colorScale: 'Preshape Theme',
   configuration: '3-4-3,3/m30/m(4)',
@@ -73,6 +82,7 @@ export const URLStateContext = React.createContext<URLState & {
   showAxis15: false,
   showAxis90: false,
   showTransforms: false,
+  showVertices: false,
 });
 
 const URLState: React.FC<{}> = (props) => {

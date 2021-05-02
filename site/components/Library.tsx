@@ -1,6 +1,6 @@
 import * as React from 'react';
 import groupBy from 'lodash.groupby';
-import { AntwerpQueue } from 'antwerp';
+import { AntwerpQueue } from '@hhogg/antwerp';
 import { Button, Buttons, Flex, Grid, Text } from 'preshape';
 import configurations from '../../configurations.json';
 import { URLStateContext } from './URLState';

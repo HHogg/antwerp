@@ -6,6 +6,7 @@ import { AntwerpQueueContext } from './AntwerpQueue';
 import toShapes from './toShapes';
 
 export interface AntwerpProps extends FlexProps {
+  animateInterval?: number;
   colorMethod?: 'placement' | 'transform';
   colorScale?: (t: number) => string;
   configuration: string;
@@ -14,12 +15,14 @@ export interface AntwerpProps extends FlexProps {
   showAxis15?: boolean;
   showAxis90?: boolean;
   showTransforms?: boolean;
+  showVertices?: boolean;
   refSvg?: React.MutableRefObject<SVGSVGElement | null>;
   worker?: Worker;
 }
 
 const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
   const {
+    animateInterval,
     colorMethod,
     colorScale,
     configuration,
@@ -28,6 +31,7 @@ const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
     showAxis15,
     showAxis90,
     showTransforms,
+    showVertices,
     refSvg,
     worker,
     ...rest
@@ -95,20 +99,26 @@ const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
   React.useEffect(() => {
     if (data) {
       refDrawer.current?.draw(size.height, size.width, data, {
+        animateInterval,
         colorMethod,
         colorScale,
         showAxis15,
         showAxis90,
         showTransforms,
+        showVertices,
       });
     }
   }, [
+    animateInterval,
     colorMethod,
     colorScale,
     data,
     showAxis15,
     showAxis90,
     showTransforms,
+    showVertices,
+    size.height,
+    size.width,
   ]);
 
   React.useEffect(() => {

@@ -4,13 +4,17 @@ const PI = Math.PI;
 const HALF_PI = PI / 2;
 
 interface ShapeProps {
+  alignment?: string;
+  family?: string;
   fill?: string;
   opacity?: number;
   radius?: number;
   rotate?: number;
+  size?: number;
   stroke?: string;
   strokeDasharray?: [number, number];
   strokeWidth?: number;
+  style?: string;
   translate?: boolean;
 }
 
@@ -98,11 +102,15 @@ export const createPolygon = (props: ShapeProps & { curved?: boolean; vertices: 
   props);
 };
 
+export const createText = (text: string, props: ShapeProps & { x: number; y: number }) => {
+  return new Two.Text(text, props.x, props.y, props);
+};
+
 const arcsToAnchors = (arcs: ArcProps[], closed?: boolean) => {
   const R = Two.Resolution * 3;
   const anchors = Array
     .from({ length: (R * arcs.length) })
-    .map(() => new Two.Anchor());
+    .map(() => new Two.Anchor(0, 0, 0, 0, 0, 0, Two.Commands.move));
 
   for (let i = 0; i < arcs.length; i++) {
     const { a1, a2, cx, cy, radius } = arcs[i];
@@ -129,15 +137,18 @@ const arcsToAnchors = (arcs: ArcProps[], closed?: boolean) => {
       if (anchor.command === Two.Commands.curve) {
         const amp = (radius * ((a2 - a1) / R) / PI);
 
-        if (j !== 0) {
-          anchor.controls.left.x = amp * Math.cos(theta - HALF_PI);
-          anchor.controls.left.y = amp * Math.sin(theta - HALF_PI);
+        if (anchor.controls) {
+          if (j !== 0) {
+            anchor.controls.left.x = amp * Math.cos(theta - HALF_PI);
+            anchor.controls.left.y = amp * Math.sin(theta - HALF_PI);
+          }
+
+          if (j !== R - 1) {
+            anchor.controls.right.x = amp * Math.cos(theta + HALF_PI);
+            anchor.controls.right.y = amp * Math.sin(theta + HALF_PI);
+          }
         }
 
-        if (j !== R - 1) {
-          anchor.controls.right.x = amp * Math.cos(theta + HALF_PI);
-          anchor.controls.right.y = amp * Math.sin(theta + HALF_PI);
-        }
       }
     }
   }
