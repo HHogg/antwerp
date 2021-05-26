@@ -327,7 +327,7 @@ export default class TilingDrawer {
     this.data.vertices.forEach(([x, y], i) => {
       this.groupVertices?.add(createText((i + 1).toString(), {
         alignment: 'middle',
-        fill: colorLightShade1,
+        fill: 'currentColor',
         size: 10,
         x: x,
         y: y,
