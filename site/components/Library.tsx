@@ -1,7 +1,7 @@
 import * as React from 'react';
 import groupBy from 'lodash.groupby';
 import { AntwerpQueue } from '@hhogg/antwerp';
-import { Button, Buttons, Flex, Grid, Text } from 'preshape';
+import { Button, Buttons, Box, Grid, Text } from 'preshape';
 import configurations from '../../configurations.json';
 import { URLStateContext } from './URLState';
 import LibraryEntry from './LibraryEntry';
@@ -28,21 +28,21 @@ export default () => {
   };
 
   return (
-    <Flex
-        direction="vertical"
+    <Box
+        flex="vertical"
         grow
         maxWidth="1016px"
         padding="x6">
-      <Flex
+      <Box
           alignChildrenVertical="middle"
-          direction="horizontal"
+          flex="horizontal"
           gap="x4"
           margin="x6">
-        <Flex grow>
+        <Box grow>
           <Text size="x3" strong>Tiling Library</Text>
-        </Flex>
+        </Box>
 
-        <Flex>
+        <Box>
           <Buttons>
             <Buttons alignChildrenHorizontal="end">
               <Button onPointerUp={ () => setGroup(group === 'vertices' ? 'wallpaper' : 'vertices') }>
@@ -50,21 +50,21 @@ export default () => {
               </Button>
             </Buttons>
           </Buttons>
-        </Flex>
-      </Flex>
+        </Box>
+      </Box>
 
       <AntwerpQueue workers={ workers }>
         { Object
             .entries(groupedConfigurations)
             .map(([groupKey, configurations]) => (
-              <Flex key={ groupKey } margin="x12">
-                <Flex margin="x6">
+              <Box key={ groupKey } margin="x12">
+                <Box margin="x6">
                   <Text strong>
                     { groupKey || 'No Defined Wallpaper Group' }
                   </Text>
-                </Flex>
+                </Box>
 
-                <Flex>
+                <Box>
                   <Grid
                       gap="x6"
                       repeatWidth="224px">
@@ -75,10 +75,10 @@ export default () => {
                           onClick={ handleSelect } />
                     )) }
                   </Grid>
-                </Flex>
-              </Flex>
+                </Box>
+              </Box>
             )) }
       </AntwerpQueue>
-    </Flex>
+    </Box>
   );
 };

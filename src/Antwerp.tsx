@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useResizeObserver, Alert, Appear, Flex, FlexProps, Text } from 'preshape';
+import { useResizeObserver, Alert, Appear, Box, BoxProps, Text } from 'preshape';
 import { AntwerpData, AntwerpOptions } from './Types';
 import AntwerpDrawer from './AntwerpDrawer';
 import { AntwerpQueueContext } from './AntwerpQueue';
 import toShapes from './toShapes';
 
-export interface AntwerpProps extends FlexProps {
+export interface AntwerpProps extends BoxProps {
   animateInterval?: number;
   colorMethod?: 'placement' | 'transform';
   colorScale?: (t: number) => string;
@@ -128,16 +128,16 @@ const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
   }, []);
 
   return (
-    <Flex { ...rest } container ref={ ref }>
-      <Flex
+    <Box { ...rest } container ref={ ref }>
+      <Box
           absolute="edge-to-edge"
           backgroundColor="background-shade-3"
           ref={ refSize } />
 
-      <Flex
+      <Box
           absolute="edge-to-edge"
           alignChildrenVertical="end"
-          direction="vertical"
+          flex="vertical"
           padding="x2">
         <Appear animation="Pop" visible={ !!(data && data.error) }>
           <Alert color="negative" fill padding="x2">
@@ -154,8 +154,8 @@ const Antwerp = React.forwardRef<HTMLDivElement, AntwerpProps>((props, ref) => {
             ) }
           </Alert>
         </Appear>
-      </Flex>
-    </Flex>
+      </Box>
+    </Box>
   );
 });
 

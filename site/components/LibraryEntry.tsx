@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Antwerp } from '@hhogg/antwerp';
-import { Flex, Link, LinkProps, Text } from 'preshape';
+import { Box, Link, LinkProps, Text } from 'preshape';
 import { Configuration } from '../Types';
 import getColorScale from '../utils/getColorScale';
 import { URLStateContext } from './URLState';
@@ -41,7 +41,7 @@ export default (props: Props) => {
         minWidth="0"
         onClick={ () => onClick(gomJauHogg) }
         padding="x3">
-      <Flex margin="x3">
+      <Box margin="x3">
         <Antwerp
             colorMethod={ colorMethod }
             colorScale={ getColorScale(colorScale, theme) }
@@ -50,7 +50,7 @@ export default (props: Props) => {
             maxRepeat={ 3 }
             shapeSize={ 30 }
             showTransforms={ showTransforms } />
-      </Flex>
+      </Box>
 
       <Text ellipsis size="x1" strong>{ cundyRollett }</Text>
       <Text ellipsis size="x1" strong>{ gomJauHogg }</Text>

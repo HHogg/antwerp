@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useLocalStorage, useMatchMedia, useTheme, Flex, Icon, Link, List, ListItem, Text, ThemeSwitcher, Tooltip, TypeTheme } from 'preshape';
+import { useLocalStorage, useMatchMedia, useTheme, Box, Icon, Link, List, ListItem, Text, ThemeSwitcher, Tooltip, TypeTheme } from 'preshape';
 import { URLStateContext } from './URLState';
 import About from './About';
 import Editor from './Editor';
@@ -25,37 +25,37 @@ export default () => {
 
   return (
     <RootContext.Provider value={ { theme, onChangeTheme } }>
-      <Flex backgroundColor="text-shade-1" direction="vertical" gap="x1" grow>
-        <Flex
+      <Box backgroundColor="text-shade-1" flex="vertical" gap="x1" grow>
+        <Box
             alignChildrenVertical="middle"
             backgroundColor="background-shade-1"
-            direction="horizontal"
+            flex="horizontal"
             gap="x6"
             paddingHorizontal="x6"
             paddingVertical="x2">
-          <Flex direction="horizontal" grow>
+          <Box flex="horizontal" grow>
             <Link display="block" to={ `/?${search}` }>
-              <Flex
+              <Box
                   alignChildrenVertical="middle"
-                  direction="horizontal"
+                  flex="horizontal"
                   gap="x4"
                   grow>
-                <Flex>
+                <Box>
                   <Logo height="32px" width="32px" />
-                </Flex>
+                </Box>
 
                 { match('600px') && (
-                  <Flex>
+                  <Box>
                     <Text>
                       <Text inline strong>ANTWERP</Text>
                     </Text>
-                  </Flex>
+                  </Box>
                 ) }
-              </Flex>
+              </Box>
             </Link>
-          </Flex>
+          </Box>
 
-          <Flex>
+          <Box>
             <List gap="x2">
               <Route exact path="/">
                 { ({ match }) => (
@@ -119,10 +119,10 @@ export default () => {
                     theme={ theme } />
               </ListItem>
             </List>
-          </Flex>
-        </Flex>
+          </Box>
+        </Box>
 
-        <Flex backgroundColor="background-shade-1" direction="vertical" grow>
+        <Box backgroundColor="background-shade-1" flex="vertical" grow>
           <Switch>
             <Route component={ Library } path="/library" />
             <Route component={ Editor } path="/" />
@@ -132,8 +132,8 @@ export default () => {
             <Route component={ About } path="/about" />
             <Route component={ Settings } path="/settings" />
           </Switch>
-        </Flex>
-      </Flex>
+        </Box>
+      </Box>
     </RootContext.Provider>
   );
 };

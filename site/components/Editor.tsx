@@ -1,6 +1,6 @@
 import * as React from 'react';
 import FileSaver from 'file-saver';
-import { Flex, Form, Icon, Input, Link, Tooltip } from 'preshape';
+import { Box, Form, Icon, Input, Link, Tooltip } from 'preshape';
 import { Antwerp } from '@hhogg/antwerp';
 import { URLStateContext } from './URLState';
 import { RootContext } from './Root';
@@ -48,14 +48,14 @@ export default () => {
   };
 
   return (
-    <Flex
+    <Box
         backgroundColor="text-shade-1"
-        direction="vertical"
+        flex="vertical"
         gap="x1"
         grow>
-      <Flex
+      <Box
           backgroundColor="background-shade-3"
-          direction="vertical"
+          flex="vertical"
           grow>
         <Antwerp
             animateInterval={ animate ? 250 : 0 }
@@ -71,17 +71,17 @@ export default () => {
             showTransforms={ showTransforms }
             showVertices={ showVertices }
             worker={ worker } />
-      </Flex>
+      </Box>
 
-      <Flex
-          direction="horizontal"
+      <Box
+          flex="horizontal"
           gap="x1">
-        <Flex
+        <Box
             alignChildrenVertical="middle"
             backgroundColor="background-shade-1"
-            direction="horizontal"
+            flex="horizontal"
             grow>
-          <Flex basis="none" grow>
+          <Box basis="0" grow>
             <Form onSubmit={ handleSubmit }>
               <Input
                   align="middle"
@@ -92,10 +92,10 @@ export default () => {
                   size="x2"
                   value={ value } />
             </Form>
-          </Flex>
-        </Flex>
+          </Box>
+        </Box>
 
-        <Flex backgroundColor="background-shade-1">
+        <Box backgroundColor="background-shade-1">
           <Tooltip content="Refresh">
             { (props) => (
               <Link { ...props }
@@ -109,9 +109,9 @@ export default () => {
               </Link>
             ) }
           </Tooltip>
-        </Flex>
+        </Box>
 
-        <Flex backgroundColor="background-shade-1">
+        <Box backgroundColor="background-shade-1">
           <Tooltip content="Save to SVG">
             { (props) => (
               <Link { ...props }
@@ -125,9 +125,9 @@ export default () => {
               </Link>
             ) }
           </Tooltip>
-        </Flex>
-      </Flex>
-    </Flex>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
