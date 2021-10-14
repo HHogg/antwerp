@@ -1,4 +1,4 @@
-import { AntwerpData, AntwerpOptions, TypeShape, Transform, TransformJS, TypeTransformPoint } from './Types';
+import { AntwerpData, AntwerpError, AntwerpOptions, TypePointType, TypeShape, Transform, TransformJS, TypeTransformPoint } from './Types';
 import toEntities from './toEntities';
 import Group from './Group';
 import LineSegment from './LineSegment';
@@ -80,11 +80,17 @@ const getSeedShape = (n: number, r: number) => {
   }
 };
 
+const getVertexByIndexAndType = (vertices: TypeTransformPoint[], index: number, type: TypePointType) => {
+  console.log(vertices, index, type);
+
+  return vertices.find(([,, t, i]) => i === index && t === type);
+};
+
 const transformMirrorPoint = (root: Group, stage: Stage, transform: Transform) => {
   if (!transform.point) return;
 
   const { point } = transform;
-  const mirrorAngle = point[2] === 'l' ? point[1] : point[1] + Math.PI / 2;
+  const mirrorAngle = point[2] === 'h' ? point[1] : point[1] + Math.PI / 2;
 
   root.add(root
     .clone()
@@ -197,7 +203,11 @@ export default (props: AntwerpOptions): AntwerpData => {
     transforms,
   ] = toEntities(configuration);
 
-  /** Stage 1 */
+  /**
+   * Stage 1 ------------------------------------------------------
+   *
+   * From the notation, get the starting shape, the "Seed Shape"
+   */
   const stage: Stage = { value: 0 };
   const stagePlacement: Stage = { value: 0 };
   const seedShape = getSeedShape(seed, shapeSize / 2);
@@ -223,7 +233,12 @@ export default (props: AntwerpOptions): AntwerpData => {
       .setStage(++stage.value)
       .setStagePlacement(++stagePlacement.value));
 
-    /** Stage 2 */
+    /**
+     * Stage 2 ------------------------------------------------------
+     *
+     * From the notation, start adding the shapes around the
+     * line segments of shapes that have already been added.
+     */
     for (let i = 0; i < shapes.length; i++) {
       const group = new Group().setStage(stage.value);
       const tail = root.tail;
@@ -271,7 +286,7 @@ export default (props: AntwerpOptions): AntwerpData => {
     for (let i = 0; i < transforms.length; i++) {
       const tn = transforms[i];
 
-      if (tn.pointIndex && !(tn.point = vertices[i][tn.pointIndex - 1])) {
+      if (tn.pointIndex && tn.pointType && !(tn.point = getVertexByIndexAndType(vertices[i], tn.pointIndex, tn.pointType))) {
         throw ErrorTransformNoIntersectionPoint(tn.string);
       }
 
@@ -312,15 +327,19 @@ export default (props: AntwerpOptions): AntwerpData => {
         }
       }
     }
+
+    /**
+     * END of stage 4 -----------------------------------------------
+     */
   } catch (e) {
     return {
-      error: e,
+      error: e as AntwerpError,
       shapes: root.toJS(),
       stages: stage.value,
       stagesPlacement: stagePlacement.value,
       transforms: transforms.map(transformToJS),
       vertices: vertices[vertices.length - 1]
-        .map(([vector]) => vector.toJS()),
+        .map(([vector, ...rest]) => [vector.toJS(), ...rest]),
     };
   }
 
@@ -330,6 +349,6 @@ export default (props: AntwerpOptions): AntwerpData => {
     stagesPlacement: stagePlacement.value,
     transforms: transforms.map(transformToJS),
     vertices: vertices[vertices.length - 1]
-        .map(([vector]) => vector.toJS()),
+      .map(([vector, ...rest]) => [vector.toJS(), ...rest]),
   };
 };

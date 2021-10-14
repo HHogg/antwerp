@@ -9,7 +9,7 @@
   "esnext": "lib/esn/index.js",
   "typings": "lib/cjs/index.d.ts",
   "scripts": {
-    "build": "yarn build:site",
+    "build": "yarn build:lib && yarn build:site",
     "build:lib": "rm -rf ./lib && yarn build:lib:cjs && yarn build:lib:esn",
     "build:lib:esn": "tsc -p src -m esnext -t esnext --outDir lib/esn",
     "build:lib:cjs": "tsc -p src --outDir lib/cjs",

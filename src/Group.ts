@@ -130,18 +130,19 @@ export default class Group {
 
   getVertices() {
     const vertices: TypeTransformPoint[] = [];
+    let c = 0, e = 0, h = 0;
 
     this.items.forEach((item) => {
       if (item instanceof Shape) {
-        vertices.push([item.centroid, item.centroid.angle, 'v']);
+        vertices.push([item.centroid, item.centroid.angle, 'c', 0]);
       }
     });
 
     this.lineSegments.forEach(({ angle, centroid, v1, v2 }) => {
       vertices.push(
-        [v1, v1.angle, 'v'],
-        [centroid, angle, 'l'],
-        [v2, v2.angle, 'v'],
+        [v1, v1.angle, 'e', 0],
+        [centroid, angle, 'h', 0],
+        [v2, v2.angle, 'e', 0],
       );
     });
 
@@ -153,7 +154,13 @@ export default class Group {
         }
 
         return a.angle - b.angle;
-      });
+      })
+      .map<TypeTransformPoint>(([vector, angle, type]) => [
+        vector, angle, type,
+        (type === 'c' && ++c) ||
+        (type === 'e' && ++e) ||
+        (type === 'h' && ++h) || 0,
+      ]);
   }
 
   setStage(stage: number) {

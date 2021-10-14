@@ -1,15 +1,19 @@
 import {
   TypeAction,
-  TypePoint,
+  TypePointType,
   TypeEntities,
   Transform,
 } from './Types';
+
+export const POINT_CENTROID = 'c';
+export const POINT_EDGE = 'e';
+export const POINT_HALFWAY = 'h';
 
 const DELIMITER_STAGE = '/';
 const DELIMITER_PHASE = '-';
 const DELIMITER_SHAPE = ',';
 
-const REGEX_TRANSFORM = /([mr])([\d.]*)?\(?(\d+)?\)?/i;
+const REGEX_TRANSFORM = /([mr])([\d.]*)?\(?([ceh])?(\d+)?\)?/i;
 
 const toRadians = (n: number) => (n * (Math.PI / 180));
 
@@ -20,22 +24,22 @@ const toTransform = (transform: string): Transform | undefined => {
     const [,
       action,
       actionAngle = '180',
+      pointType,
       pointIndex,
     ] = match as unknown as [
       string,
       TypeAction,
       string | undefined,
+      TypePointType | undefined,
       string | undefined,
-      TypePoint | undefined,
     ];
 
     if ((action === 'm' || action === 'r')) {
       return {
         action: action,
-        actionAngle: pointIndex
-          ? undefined
-          : toRadians(+actionAngle),
+        actionAngle: toRadians(+actionAngle),
         pointIndex: pointIndex ? +pointIndex : 0,
+        pointType: pointType,
         string: transform,
       };
     }
@@ -61,7 +65,6 @@ export default (string: string): TypeEntities => {
   const transformEntities = transforms
     .map(toTransform)
     .filter(Boolean);
-
 
   return [
     +shapeSeed,

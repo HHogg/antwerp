@@ -39,7 +39,7 @@ const urlStateDefaults: URLStateDefaults<URLState> = {
   animate: false,
   colorMethod: 'placement',
   colorScale: 'Preshape Theme',
-  configuration: '3-4-3,3/m30/m(4)',
+  configuration: '3-4-3,3/m30/m(h2)',
   fadeConnectedShapes: false,
   maxRepeat: 3,
   showAxis15: false,
