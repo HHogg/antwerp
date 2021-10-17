@@ -1,6 +1,6 @@
 {
   "name": "@hhogg/antwerp",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "Application for Nets and Tessellations With Edge-to-edge Regular Polygons",
   "repository": "git@github.com:HHogg/antwerp.git",
   "author": "Harry Hogg <harry@hogg.io>",
