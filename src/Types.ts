@@ -3,7 +3,7 @@ import Vector from './Vector';
 export type TypeNotationStyle = 'index' | 'intersection';
 
 export type TypeAction = 'm' | 'r';
-export type TypePointType = 'c' | 'e' | 'h';
+export type TypePointType = 'c' | 'v' | 'h';
 export type TypeShape = 3 | 4 | 6 | 8 | 12;
 
 export type TypeTransformPoint = [Vector, number, TypePointType, number];

@@ -6,14 +6,14 @@ import {
 } from './Types';
 
 export const POINT_CENTROID = 'c';
-export const POINT_EDGE = 'e';
+export const POINT_VECTOR = 'v';
 export const POINT_HALFWAY = 'h';
 
 const DELIMITER_STAGE = '/';
 const DELIMITER_PHASE = '-';
 const DELIMITER_SHAPE = ',';
 
-const REGEX_TRANSFORM = /([mr])([\d.]*)?\(?([ceh])?(\d+)?\)?/i;
+const REGEX_TRANSFORM = /([mr])([\d.]*)?\(?([chv])?(\d+)?\)?/i;
 
 const toRadians = (n: number) => (n * (Math.PI / 180));
 
